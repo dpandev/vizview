@@ -2,13 +2,18 @@ import * as React from 'react'
 //import { StatusBar } from 'expo-status-bar';  //use to determine height from top for android
 import { StyleSheet, View } from 'react-native';
 import { useDimensions, useDeviceOrientation } from '@react-native-community/hooks';
-import { Text, TextInput, Button, RadioButton } from 'react-native-paper'
+import { Text, TextInput, Button, RadioButton } from 'react-native-paper';
 
 export default function VisitorForm() {
 
   //const { landscape } = useDeviceOrientation(); //test later
   const [text, setText] = React.useState("");
   const [barber, setBarber] = React.useState('barber1')
+
+  const handleSubmit = () => {
+    console.log("Submit pressed")
+
+  }
 
   return (
     <View style={styles.container}>
@@ -32,10 +37,10 @@ export default function VisitorForm() {
             </View>
         </RadioButton.Group>
         <Button 
-          style={{padding: 10, marginTop: '15%'}} 
-          labelStyle={{color: 'white'}} 
+        style={styles.button}
+          labelStyle={styles.btnContent} 
           mode='contained'
-          onPress={() => console.log("submit form")}>
+          onPress={handleSubmit}>
             Submit
         </Button>
       </View>
@@ -62,4 +67,11 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginBottom: '20%',
   },
+  button: {
+    marginTop: 40,
+  },
+  btnContent: {
+    fontSize: 18,
+    padding: 10,
+  }
 });
