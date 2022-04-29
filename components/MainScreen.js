@@ -11,7 +11,7 @@ export default function MainScreen({ navigation }) {
     if (value === 'register') {
       navigation.navigate('Register')
     } else {
-      navigation.navigate('LoginForm')
+      navigation.navigate('Login')
     }
   }
 

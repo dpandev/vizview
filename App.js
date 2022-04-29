@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import CheckinScreen from './components/CheckinScreen';
 import VisitorForm from './components/VisitorForm';
 import RegisterForm from './components/RegisterForm';
+import LoginForm from './components/LoginForm';
 import MainScreen from './components/MainScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LogoTitle from './components/LogoTitle';
@@ -30,6 +31,7 @@ export default function App() {
         <Stack.Navigator>
           <Stack.Screen name='MainScreen' component={MainScreen} options={{ headerShown: false }}/>
           <Stack.Screen name='Register' component={RegisterForm} />
+          <Stack.Screen name='Login' component={LoginForm} />
           <Stack.Screen
             name="Checkin"
             component={CheckinScreen}
