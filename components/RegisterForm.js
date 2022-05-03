@@ -4,7 +4,7 @@ import FormField from './FormField';
 import { formData } from '../formData';
 import { Text, Button } from 'react-native-paper';
 
-const RegisterForm = (props) => {
+const RegisterForm = ({navigation, route}, props) => {
   const [formValues, handleFormValueChange, setFormValues] = formData({
     username: '',
     email: '',
@@ -12,6 +12,7 @@ const RegisterForm = (props) => {
   })
   const handleSubmit = () => {
     console.log("register submit")
+    navigation.navigate('TestScreen')
   }
 
   return (  //TODO add form validation

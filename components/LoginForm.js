@@ -12,8 +12,7 @@ const LoginForm = ({navigation, route}, props) => {
   const handleSubmit = () => {
     console.log("login submit")
     //temp path to checkin screen (as checkin-guest account view)
-    navigation.navigate('Checkin')
-    // console.log(route)
+    navigation.navigate('CheckinScreen')
   }
 
   return (  //TODO really should just make register/login form into one reusable component

@@ -1,17 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
-import LogoTitle from './LogoTitle';
+import LogoTitle from '../LogoTitle';
 
-export default function MainScreen({ navigation }) {
+export default function HomeScreen({ navigation }) {
 
   const handleClick = (value) => {
     console.log("Button Pressed")
     console.log(value)
     if (value === 'register') {
-      navigation.navigate('Register')
+      navigation.navigate('RegisterForm')
     } else {
-      navigation.navigate('Login')
+      navigation.navigate('LoginForm')
     }
   }
 
