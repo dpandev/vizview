@@ -3,7 +3,7 @@ import { Text } from 'react-native-paper';
 
 export default function NotificationScreen() {
 
-  return (  //TODO: logic to dynamically display notifications and details
+  return (  //TODO: logic to dynamically display notifications and details, add react-native refreshcontrol for pulldown action
     <ScrollView>
       <View style={styles.container}>
         <Text>Hello</Text>

@@ -4,7 +4,7 @@ import FormField from './FormField';
 import { formData } from '../formData';
 import { Text, Button } from 'react-native-paper';
 
-const LoginForm = ({navigation, route}, props) => {
+const LoginForm = ({navigation, route}, props) => { //import and use activityindicator from paper when login/reg request process is loading
   const [formValues, handleFormValueChange, setFormValues] = formData({
     email: '',
     password: '',

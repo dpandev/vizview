@@ -13,7 +13,7 @@ export default function HomeStackScreen() {
       <HomeStack.Screen name="LoginForm" component={LoginForm} />
       <HomeStack.Screen name="RegisterForm" component={RegisterForm} />
       <HomeStack.Screen name="VisitorForm" component={VisitorForm} />
-      <HomeStack.Screen name="CheckinScreen" component={CheckinScreen} />
+      <HomeStack.Screen name="CheckinScreen" component={CheckinScreen} options={{ headerShown: false }}/>
     </HomeStack.Navigator>
   );
 }
