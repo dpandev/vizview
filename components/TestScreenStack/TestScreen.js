@@ -62,7 +62,6 @@ export default function TestScreen({ navigation }) {
           onPress={() => handleClick('SettingsStackScreen')}>
             SettingsStackScreen
         </Button>
-        <StatusBar style="auto" />
       </View>
     </ScrollView>
   );

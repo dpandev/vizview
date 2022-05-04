@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import LogoTitle from '../LogoTitle';
 
 export default function HomeScreen({ navigation }) {
@@ -15,8 +16,8 @@ export default function HomeScreen({ navigation }) {
     }
   }
 
-  return (
-    <View style={styles.container}>
+  return (  //if logged in, display alt screen
+    <SafeAreaView style={styles.container}>
       <LogoTitle />
       <Text style={styles.brandText}>
         {'VizView'}
@@ -36,7 +37,7 @@ export default function HomeScreen({ navigation }) {
           Register
       </Button>
       <StatusBar style="auto" />
-    </View>
+    </SafeAreaView>
   );
 }
 

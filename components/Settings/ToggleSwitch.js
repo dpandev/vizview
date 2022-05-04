@@ -6,6 +6,5 @@ export default function ToggleSwitch(activeState) {
 
   const onToggleSwitch = () => setIsSwitchOn(value => !value);
 
-
   return <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
 };

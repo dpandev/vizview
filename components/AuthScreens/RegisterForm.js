@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 import FormField from './FormField';
-import { formData } from '../formData';
+import { formData } from './formData';
 import { Text, Button } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const RegisterForm = ({navigation, route}, props) => {
   const [formValues, handleFormValueChange, setFormValues] = formData({
@@ -17,7 +18,7 @@ const RegisterForm = ({navigation, route}, props) => {
 
   return (  //TODO add form validation
     <ScrollView>
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <Text style={{
           fontSize: 24,
           textAlign: 'center',
@@ -55,7 +56,7 @@ const RegisterForm = ({navigation, route}, props) => {
           onPress={handleSubmit}>
             Register
         </Button>
-      </View>
+      </SafeAreaView>
     </ScrollView>
   )
 }

@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Button, Text } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function CheckinScreen({ navigation }) {
 
@@ -10,7 +11,7 @@ export default function CheckinScreen({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.titleText}>
         Welcome to
       </Text>
@@ -21,7 +22,7 @@ export default function CheckinScreen({ navigation }) {
         Tap to check in
       </Button>
       <StatusBar style="auto" />
-    </View>
+    </SafeAreaView>
   );
 }
 

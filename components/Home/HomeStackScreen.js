@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './HomeScreen';
-import LoginForm from '../LoginForm';
-import RegisterForm from '../RegisterForm';
+import LoginForm from '../AuthScreens/LoginForm';
+import RegisterForm from '../AuthScreens/RegisterForm';
 import VisitorForm from '../VisitorForm';
 import CheckinScreen from '../CheckinScreen';
 

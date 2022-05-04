@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 import FormField from './FormField';
-import { formData } from '../formData';
+import { formData } from './formData';
 import { Text, Button } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const LoginForm = ({navigation, route}, props) => { //import and use activityindicator from paper when login/reg request process is loading
   const [formValues, handleFormValueChange, setFormValues] = formData({
@@ -17,7 +18,7 @@ const LoginForm = ({navigation, route}, props) => { //import and use activityind
 
   return (  //TODO really should just make register/login form into one reusable component
     <ScrollView>
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <Text style={{
           fontSize: 24,
           textAlign: 'center',
@@ -49,7 +50,7 @@ const LoginForm = ({navigation, route}, props) => { //import and use activityind
           onPress={handleSubmit}>
             Login
         </Button>
-      </View>
+      </SafeAreaView>
     </ScrollView>
   )
 }
