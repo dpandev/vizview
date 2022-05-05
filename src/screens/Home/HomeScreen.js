@@ -1,22 +1,23 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
-import { Button, Text } from 'react-native-paper';
-import LogoTitle from './LogoTitle';
+import { StatusBar } from 'expo-status-bar'
+import { StyleSheet, View } from 'react-native'
+import { Button, Text } from 'react-native-paper'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import LogoTitle from '../../components/LogoTitle'
 
-export default function MainScreen({ navigation }) {
+export default function HomeScreen({ navigation }) {
 
   const handleClick = (value) => {
     console.log("Button Pressed")
     console.log(value)
     if (value === 'register') {
-      navigation.navigate('Register')
+      navigation.navigate('RegisterForm')
     } else {
-      navigation.navigate('Login')
+      navigation.navigate('LoginForm')
     }
   }
 
-  return (
-    <View style={styles.container}>
+  return (  //if logged in, display alt screen
+    <SafeAreaView style={styles.container}>
       <LogoTitle />
       <Text style={styles.brandText}>
         {'VizView'}
@@ -36,7 +37,7 @@ export default function MainScreen({ navigation }) {
           Register
       </Button>
       <StatusBar style="auto" />
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -66,4 +67,4 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     padding: 10,
   }
-});
+})
