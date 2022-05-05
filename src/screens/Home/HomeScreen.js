@@ -10,9 +10,9 @@ export default function HomeScreen({ navigation }) {
     console.log("Button Pressed")
     console.log(value)
     if (value === 'register') {
-      navigation.navigate('RegisterForm')
+      navigation.navigate('SignUpScreen')
     } else {
-      navigation.navigate('LoginForm')
+      navigation.navigate('SignInScreen')
     }
   }
 
