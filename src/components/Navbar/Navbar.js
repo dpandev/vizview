@@ -1,10 +1,10 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import NotificationScreen from './NotificationScreen';
-import SettingsStackScreen from './Settings/SettingsStackScreen';
-import HomeStackScreen from './Home/HomeStackScreen';
-import TestStackScreen from './TestScreenStack/TestStackScreen';
+import NotificationScreen from '../../screens/NotificationScreen';
+import SettingsStackScreen from '../../screens/SettingsScreen/SettingsStackScreen';
+import HomeStackScreen from '../../screens/Home/HomeStackScreen';
+import TestStackScreen from '../../screens/TestScreenStack/TestStackScreen';
 
 const Tab = createBottomTabNavigator()
 

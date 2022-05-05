@@ -1,6 +1,6 @@
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Navbar from './components/Navbar';
+import Navbar from './src/components/Navbar';
 
 const theme = {
   ...DefaultTheme,
@@ -9,13 +9,13 @@ const theme = {
     primary: 'black',
     accent: 'black',
     //text: 'black',
-    //background: 'blue',
+    //background: '#F9FBFC',
     //surface: 'blue',
   },
   // dark: true,
 };
 
-export default function App() {
+export default function App() { //TODO show navbar only if logged in
   return (  //TODO staff auth pages
     <SafeAreaProvider>
       <PaperProvider theme={theme}>

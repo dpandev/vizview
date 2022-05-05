@@ -1,6 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, ScrollView } from 'react-native';
-import { Button, Text } from 'react-native-paper';
+import { StyleSheet, View, ScrollView } from 'react-native'
+import { Button, Text } from 'react-native-paper'
 
 export default function TestScreen({ navigation }) {
 
@@ -13,6 +12,41 @@ export default function TestScreen({ navigation }) {
   return (
     <ScrollView>
       <View style={styles.container}>
+        <Button 
+          labelStyle={styles.btnContent} 
+          style={styles.button}
+          mode='text' 
+          onPress={() => handleClick('SignInScreen')}>
+            SignIn
+        </Button>
+        <Button 
+          labelStyle={styles.btnContent} 
+          style={styles.button}
+          mode='text' 
+          onPress={() => handleClick('SignUpScreen')}>
+            SignUp
+        </Button>
+        <Button 
+          labelStyle={styles.btnContent} 
+          style={styles.button}
+          mode='text' 
+          onPress={() => handleClick('ConfirmEmailScreen')}>
+            ConfirmEmail
+        </Button>
+        <Button 
+          labelStyle={styles.btnContent} 
+          style={styles.button}
+          mode='text' 
+          onPress={() => handleClick('ForgotPasswordScreen')}>
+            ForgotPassword
+        </Button>
+        <Button 
+          labelStyle={styles.btnContent} 
+          style={styles.button}
+          mode='text' 
+          onPress={() => handleClick('NewPasswordScreen')}>
+            NewPassword
+        </Button>
         <Button 
           labelStyle={styles.btnContent} 
           style={styles.button}
@@ -38,7 +72,7 @@ export default function TestScreen({ navigation }) {
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
-          onPress={() => handleClick('VisitorForm')}>
+          onPress={() => handleClick('VisitorFormScreen')}>
             VisitorForm
         </Button>
         <Button 
@@ -64,7 +98,7 @@ export default function TestScreen({ navigation }) {
         </Button>
       </View>
     </ScrollView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -94,4 +128,4 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     padding: 10,
   }
-});
+})

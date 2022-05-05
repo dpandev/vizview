@@ -29,7 +29,6 @@ export default function AdminSettings({ navigation }) {
         </View>
         {Object.values(settings).map((setting, index) => ( 
           //need to pass setting active state to toggle and send state back to here from toggle,or just update here seperately
-          (console.log(setting)),
           <View style={styles.option} key={index}>
             <Text>{setting.name}</Text>
             <ToggleSwitch activeState={setting.active} />
