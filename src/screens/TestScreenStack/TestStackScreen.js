@@ -2,28 +2,28 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TestScreen from './TestScreen';
 import SignInScreen from '../SignInScreen';
 import SignUpScreen from '../SignUpScreen';
-import CheckinScreen from '../CheckinScreen';
-import VisitorFormScreen from '../VisitorFormScreen';
+import VisitorCheckinScreen from '../VisitorCheckinScreen';
 import NotificationScreen from '../NotificationScreen';
-import SettingsStackScreen from '../SettingsScreen/SettingsStackScreen';
+import SettingsScreen from '../SettingsScreen/SettingsScreen';
 import ConfirmEmailScreen from '../ConfirmEmailScreen';
 import ForgotPasswordScreen from '../ForgotPasswordScreen';
 import NewPasswordScreen from '../NewPasswordScreen'
+import HomeScreen from '../Home/HomeScreen';
 
 export default function TestStackScreen() {
   const TestStack = createNativeStackNavigator();
   return (
     <TestStack.Navigator>
       <TestStack.Screen name="TestScreen" component={TestScreen} />
-      <TestStack.Screen name="SignInScreen" component={SignInScreen} options={{ headerShown: false }} />
-      <TestStack.Screen name="SignUpScreen" component={SignUpScreen} options={{ headerShown: false }} />
-      <TestStack.Screen name="ConfirmEmailScreen" component={ConfirmEmailScreen} options={{ headerShown: false }} />
-      <TestStack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} options={{ headerShown: false }} />
-      <TestStack.Screen name="NewPasswordScreen" component={NewPasswordScreen} options={{ headerShown: false }} />
-      <TestStack.Screen name="CheckinScreen" component={CheckinScreen} />
-      <TestStack.Screen name="VisitorFormScreen" component={VisitorFormScreen} options={{ headerShown: false }} />
-      <TestStack.Screen name="NotificationScreen" component={NotificationScreen} />
-      <TestStack.Screen name="SettingsStackScreen" component={SettingsStackScreen} options={{ headerShown: false }} />
+      <TestStack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
+      <TestStack.Screen name="SignUp" component={SignUpScreen} options={{ headerShown: false }} />
+      <TestStack.Screen name="ConfirmEmail" component={ConfirmEmailScreen} options={{ headerShown: false }} />
+      <TestStack.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{ headerShown: false }} />
+      <TestStack.Screen name="NewPassword" component={NewPasswordScreen} options={{ headerShown: false }} />
+      <TestStack.Screen name="VisitorCheckinScreen" component={VisitorCheckinScreen} options={{ headerShown: false }} />
+      <TestStack.Screen name="Notification" component={NotificationScreen} />
+      <TestStack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: false }} />
+      <TestStack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
     </TestStack.Navigator>
   );
 }

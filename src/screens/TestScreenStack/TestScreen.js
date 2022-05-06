@@ -16,85 +16,71 @@ export default function TestScreen({ navigation }) {
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
-          onPress={() => handleClick('SignInScreen')}>
+          onPress={() => handleClick('SignIn')}>
             SignIn
         </Button>
         <Button 
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
-          onPress={() => handleClick('SignUpScreen')}>
+          onPress={() => handleClick('SignUp')}>
             SignUp
         </Button>
         <Button 
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
-          onPress={() => handleClick('ConfirmEmailScreen')}>
+          onPress={() => handleClick('ConfirmEmail')}>
             ConfirmEmail
         </Button>
         <Button 
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
-          onPress={() => handleClick('ForgotPasswordScreen')}>
+          onPress={() => handleClick('ForgotPassword')}>
             ForgotPassword
         </Button>
         <Button 
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
-          onPress={() => handleClick('NewPasswordScreen')}>
+          onPress={() => handleClick('NewPassword')}>
             NewPassword
         </Button>
         <Button 
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
-          onPress={() => handleClick('LoginForm')}>
-            Login
-        </Button>
-        <Button 
-          labelStyle={styles.btnContent} 
-          style={styles.button}
-          mode='text' 
-          onPress={() => handleClick('RegisterForm')}>
-            Register
-        </Button>
-        <Button 
-          labelStyle={styles.btnContent} 
-          style={styles.button}
-          mode='text' 
-          onPress={() => handleClick('CheckinScreen')}>
-            CheckinScreen
-        </Button>
-        <Button 
-          labelStyle={styles.btnContent} 
-          style={styles.button}
-          mode='text' 
-          onPress={() => handleClick('VisitorFormScreen')}>
+          onPress={() => handleClick('VisitorForm')}>
             VisitorForm
         </Button>
         <Button 
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
-          onPress={() => handleClick('NotificationScreen')}>
+          onPress={() => handleClick('VisitorCheckin')}>
+            VisitorCheckin
+        </Button>
+        <Button 
+          labelStyle={styles.btnContent} 
+          style={styles.button}
+          mode='text' 
+          onPress={() => handleClick('Notifications')}>
             Notifications
         </Button>
         <Button 
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
-          onPress={() => handleClick('HomeStackScreen')}>
-            HomeStackScreen
+          onPress={() => handleClick('HomeScreen')}>
+            HomeScreen
         </Button>
         <Button 
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
-          onPress={() => handleClick('SettingsStackScreen')}>
-            SettingsStackScreen
+          onPress={() => handleClick('Settings')}>
+            SettingsScreen
         </Button>
       </View>
     </ScrollView>

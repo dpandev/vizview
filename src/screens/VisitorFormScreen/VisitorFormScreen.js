@@ -8,6 +8,7 @@ import React, { useState } from 'react'
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton/CustomButton'
 import CustomRadioGroup from '../../components/CustomRadioGroup'
+import { useNavigation } from '@react-navigation/native'
 
 const VisitorForm = () => {
   const barbers = {
@@ -36,12 +37,18 @@ const VisitorForm = () => {
     // },
   }
 
+  const navigation = useNavigation()
+
   const [name, setName] = useState('')
   const [barber, setBarber] = useState('')
   const [comment, setComment] = useState('')
 
   const onCheckinPressed = () => {
     console.warn('Checkin Pressed')
+  }
+
+  const onBackToHomePressed = () => {
+    navigation.navigate('VisitorCheckin')
   }
 
   return (
@@ -69,6 +76,12 @@ const VisitorForm = () => {
         />
 
         <CustomButton onPress={onCheckinPressed} text={"Check in"} />
+
+        <CustomButton
+          onPress={onBackToHomePressed} 
+          text={"Back to Home"} 
+          type="TERTIARY"
+        />
       </SafeAreaView>
     </ScrollView>
   )

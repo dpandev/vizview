@@ -7,17 +7,21 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import React, { useState } from 'react'
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton/CustomButton'
+import { useNavigation } from '@react-navigation/native'
 
 const NewPasswordScreen = () => {
   const [code, setCode] = useState('')
   const [password, setPassword] = useState('')
+  
+  const navigation = useNavigation()
 
   const onSubmitPressed = () => {
     console.warn('Submit Pressed')
+    // navigation.navigate('')
   }
 
   const onSignInPressed = () => {
-    console.warn('SignIn Pressed')
+    navigation.navigate('SignIn')
   }
 
 

@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function CheckinScreen({ navigation }) {
+const VisitorCheckinScreen = ({ navigation }) => {
 
   const btnExpand = () => {
     console.log("Button Pressed")
@@ -48,3 +48,5 @@ const styles = StyleSheet.create({
     padding: 10,
   }
 });
+
+export default VisitorCheckinScreen
