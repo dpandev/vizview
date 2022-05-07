@@ -4,33 +4,52 @@ import {
   ScrollView
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { Modal } from 'react-native-paper'
 import React, { useState } from 'react'
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton/CustomButton'
 import SocialLoginButtons from '../../components/SocialLoginButtons'
-import { useNavigation } from '@react-navigation/native'
+import { auth } from '../../../firebase'
+import PrivacyPolicy from '../../components/PrivacyPolicy'
+import TermsOfService from '../../components/TermsOfService'
+import ErrorMessage from '../../components/ErrorMessage'
 
-const SignUpScreen = () => {
+const SignUpScreen = ({ navigation }) => {
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [passwordConfirm, setPasswordConfirm] = useState('')
+  
+  const [showPrivacy, setShowPrivacy] = useState(false)
+  const [showTerms, setShowTerms] = useState(false)
 
-  const navigation = useNavigation()
+  const [authError, setAuthError] = useState(false)
 
   const onRegisterPressed = () => {
-    console.warn('RegisterPressed')
-    //register account and auto sign in
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then(userCredentials => {
+        const user = userCredentials.user
+        console.log("registered with: ", user.email)
+      }).catch(error => {
+        setAuthError(true)
+      })
   }
 
   const onTosPressed = () => {
-    console.warn('onTosPressed')
-    //navigation.navigate('TermsOfService')
+    setShowTerms(true)
+  }
+
+  const dismissTerms = () => {
+    setShowTerms(false)
   }
 
   const onPrivacyPressed = () => {
-    console.warn('onPrivacyPressed')
-    //navigation.navigate('PrivacyPolicy')
+    setShowPrivacy(true)
+  }
+
+  const dismissPrivacy = () => {
+    setShowPrivacy(false)
   }
 
   const onSignInPressed = () => {
@@ -79,7 +98,23 @@ const SignUpScreen = () => {
           text={"Have an account? Sign in"} 
           type="TERTIARY"
         />
-        
+
+        <ErrorMessage 
+          visible={authError} 
+          title={"Authentication Error"}
+          message={"User Registration Failed. Please try again."} 
+          button={"Close"}
+          onDismiss={setAuthError} 
+        />
+
+        <Modal visible={showTerms} onDismiss={dismissTerms} contentContainerStyle={styles.modalContent}>
+          <TermsOfService />
+        </Modal>
+
+        <Modal visible={showPrivacy} onDismiss={dismissPrivacy} contentContainerStyle={styles.modalContent}>
+          <PrivacyPolicy />
+        </Modal>
+
       </SafeAreaView>
     </ScrollView>
   )
@@ -102,6 +137,13 @@ const styles = StyleSheet.create({
   },
   link: {
     color: 'tomato',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 5,
+    width: '75%',
+    height: '75%',
+    alignSelf: 'center',
   },
 })
 

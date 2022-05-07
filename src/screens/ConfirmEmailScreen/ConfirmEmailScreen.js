@@ -1,8 +1,6 @@
 import { 
-  View, 
   Text, 
   StyleSheet, 
-  useWindowDimensions, 
   ScrollView
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -10,11 +8,9 @@ import React, { useState } from 'react'
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton/CustomButton'
 
-const ConfirmEmailScreen = () => {
+const ConfirmEmailScreen = ({ navigation }) => {
   const [username, setUsername] = useState('')
   const [code, setCode] = useState('')
-
-  const {height} = useWindowDimensions()
 
   const onConfirmPressed = () => {
     console.warn('Confirm Pressed')

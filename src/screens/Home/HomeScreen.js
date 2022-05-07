@@ -1,16 +1,25 @@
-import { StyleSheet, View } from 'react-native'
-import { Button, Text } from 'react-native-paper'
+import React from 'react'
+import { StyleSheet } from 'react-native'
+import { Text } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import LogoTitle from '../../components/LogoTitle'
+import Logo from '../../components/Logo'
+import { auth } from '../../../firebase'
+import CustomButton from '../../components/CustomButton'
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
+
+  const onSignOut = () => {
+    auth.signOut()
+  }
 
   return (
     <SafeAreaView style={styles.container}>
-      <LogoTitle />
+      <Logo />
       <Text style={styles.brandText}>
         {'VizView'}
       </Text>
+      <Text>Email: {auth.currentUser?.email}</Text>
+      <CustomButton onPress={onSignOut} text='Sign out' />
     </SafeAreaView>
   );
 }
@@ -20,18 +29,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 20,
   },
   brandText: {
     fontSize: 34,
     fontWeight: '700',
     marginBottom: 75,
   },
-  titleText: {
-    textAlign: 'center',
-    fontWeight: '700',
-    fontSize: 30,
-    marginBottom: 15,
-  }
 })
 
 export default HomeScreen

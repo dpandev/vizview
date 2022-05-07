@@ -1,6 +1,7 @@
-import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Navigation from './src/Navigation';
+import React from 'react'
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import AppRoutes from './src/Navigation'
 
 const theme = {
   ...DefaultTheme,
@@ -13,14 +14,14 @@ const theme = {
     //surface: 'blue',
   },
   // dark: true,
-};
+}
 
-export default function App() { //TODO show navbar only if logged in
-  return (  //TODO staff auth pages
+export default function App() {
+  return (
     <SafeAreaProvider>
       <PaperProvider theme={theme}>
-        <Navigation />
+        <AppRoutes />
       </PaperProvider>
     </SafeAreaProvider>
-  );
-};
+  )
+}

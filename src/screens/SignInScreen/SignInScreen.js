@@ -1,29 +1,29 @@
 import { 
-  View, 
-  Text,
-  Image, 
-  StyleSheet, 
-  useWindowDimensions, 
+  StyleSheet,  
   ScrollView
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import React, { useState } from 'react'
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton'
-import Logo from '../../../assets/images/ProFormBarberLogo.png'
+import Logo from '../../components/Logo'
 import SocialLoginButtons from '../../components/SocialLoginButtons'
-import { useNavigation } from '@react-navigation/native'
+import {auth} from '../../../firebase'
+import ErrorMessage from '../../components/ErrorMessage'
 
-const SignInScreen = () => {
-  const [username, setUsername] = useState('')
+const SignInScreen = ({ navigation }) => {
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
-  const {height} = useWindowDimensions()
-  const navigation = useNavigation()
+  const [authError, setAuthError] = useState(false)
 
   const onSignInPressed = () => {
-    console.warn('SignIn Pressed')
-    navigation.navigate('DefaultNavigation')
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then(userCredentials => {
+        const user = userCredentials.user
+      }).catch(error => {
+        setAuthError(true)
+      })
   }
 
   const onForgotPasswordPressed = () => {
@@ -37,15 +37,11 @@ const SignInScreen = () => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <SafeAreaView style={styles.root}>
-        <Image 
-          source={Logo} 
-          style={[styles.logo, {height: height * 0.3}]} 
-          resizeMode='contain' 
-        />
+        <Logo />
         <CustomInput 
-          placeholder='Username' 
-          value={username} 
-          setValue={setUsername} 
+          placeholder='Email' 
+          value={email} 
+          setValue={setEmail} 
         />
         <CustomInput 
           placeholder='Password' 
@@ -62,6 +58,13 @@ const SignInScreen = () => {
           onPress={onSignupPressed}
           text={"Don't have an account? Create one"}
           type='TERTIARY'
+        />
+        <ErrorMessage 
+          visible={authError} 
+          title={"Authentication Error"}
+          message={"User Login Failed. Please try again."} 
+          button={"Close"}
+          onDismiss={setAuthError} 
         />
       </SafeAreaView>
     </ScrollView>

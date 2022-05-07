@@ -8,7 +8,7 @@ import React, { useState } from 'react'
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton/CustomButton'
 
-const ForgotPasswordScreen = () => {
+const ForgotPasswordScreen = ({ navigation }) => {
   const [username, setUsername] = useState('')
 
   const onSendPressed = () => {
@@ -16,7 +16,7 @@ const ForgotPasswordScreen = () => {
   }
 
   const onSignInPressed = () => {
-    console.warn('SignIn Pressed')
+    navigation.navigate('SignIn')
   }
 
 

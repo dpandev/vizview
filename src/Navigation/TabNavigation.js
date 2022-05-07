@@ -1,13 +1,14 @@
+import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import NotificationScreen from '../screens/NotificationScreen'
 import SettingsStackScreen from '../screens/SettingsScreen/SettingsStackScreen'
-import HomeStackScreen from './HomeStackScreen'
+import HomeStackScreen from './HomeStack'
 import TestStackScreen from '../screens/TestScreenStack/TestStackScreen'
 
 const Tab = createBottomTabNavigator()
 
-const DefaultNavigation = () => {
+const TabNavigation = () => {
 
   return (
     <Tab.Navigator
@@ -40,4 +41,4 @@ const DefaultNavigation = () => {
   )
 }
 
-export default DefaultNavigation
+export default TabNavigation

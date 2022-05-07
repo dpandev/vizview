@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Switch } from 'react-native-paper';
 
 export default function ToggleSwitch(activeState) {

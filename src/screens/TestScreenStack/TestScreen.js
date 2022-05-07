@@ -1,3 +1,4 @@
+import React from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native'
 import { Button, Text } from 'react-native-paper'
 

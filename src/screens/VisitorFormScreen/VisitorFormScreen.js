@@ -8,9 +8,8 @@ import React, { useState } from 'react'
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton/CustomButton'
 import CustomRadioGroup from '../../components/CustomRadioGroup'
-import { useNavigation } from '@react-navigation/native'
 
-const VisitorForm = () => {
+const VisitorForm = ({ navigation }) => {
   const barbers = {
     barber1: {
       value: 'Mike',
@@ -37,8 +36,6 @@ const VisitorForm = () => {
     // },
   }
 
-  const navigation = useNavigation()
-
   const [name, setName] = useState('')
   const [barber, setBarber] = useState('')
   const [comment, setComment] = useState('')
@@ -61,7 +58,7 @@ const VisitorForm = () => {
           setValue={setName} 
         />
 
-        <Text style={styles.text}>{"Which barber do you have an appointment with?"}</Text>
+        <Text style={styles.text}>{"Which barber do you have an appointment with? (Select one)"}</Text>
 
         <CustomRadioGroup 
           value={barber} 
