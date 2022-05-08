@@ -1,5 +1,6 @@
 // Import the functions you need from the SDKs you need
-import * as firebase from "firebase"
+import * as firebase from 'firebase'
+import 'firebase/firestore'
 import {
   API_KEY,
   AUTH_DOMAIN,
@@ -30,5 +31,6 @@ if (firebase.apps.length === 0) {
 }
 
 const auth = firebase.auth()
+const db = firebase.firestore()
 
-export { auth }
+export { auth, db }

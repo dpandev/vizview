@@ -7,7 +7,7 @@ const Logo = () => {
   return (
     <Image
       style={[styles.logo, {height: height * 0.3}]}
-      source={require('../../assets/images/ProFormBarberLogo.png')}//temp placeholder
+      source={require('../../../assets/images/ProFormBarberLogo.png')}
       resizeMode='contain'
     />
   )

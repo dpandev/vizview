@@ -1,7 +1,6 @@
 import React from 'react'
 import CustomButton from '../CustomButton/CustomButton'
 import { auth } from '../../../firebase'
-import firebase from 'firebase/app'
 
 const SocialLoginButtons = () => {
 
@@ -10,14 +9,11 @@ const SocialLoginButtons = () => {
   }
 
   const onSignInGoogle = () => {
-    // console.warn('Sign In Google')
-
     const provider = new firebase.auth.GoogleAuthProvider()
     auth
       .signInWithPopup(provider).then((result) => {
         let token = result.credential.accessToken
         let user = result.user
-      
         console.log(token)
         console.log(user)
       }).catch(error => alert(error.message))

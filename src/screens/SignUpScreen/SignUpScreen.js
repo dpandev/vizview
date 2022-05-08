@@ -3,13 +3,14 @@ import {
   StyleSheet,  
   ScrollView
 } from 'react-native'
+import { StatusBar } from 'expo-status-bar'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Modal } from 'react-native-paper'
 import React, { useState } from 'react'
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton/CustomButton'
 import SocialLoginButtons from '../../components/SocialLoginButtons'
-import { auth } from '../../../firebase'
+import { auth, db } from '../../../firebase'
 import PrivacyPolicy from '../../components/PrivacyPolicy'
 import TermsOfService from '../../components/TermsOfService'
 import ErrorMessage from '../../components/ErrorMessage'
@@ -25,15 +26,23 @@ const SignUpScreen = ({ navigation }) => {
 
   const [authError, setAuthError] = useState(false)
 
+  const addToDatabase = () => {
+    db.collection('barbers').add({
+      name: username,
+      email: email,
+      createdAt: new Date()
+    })
+  }
+
   const onRegisterPressed = () => {
     auth
       .createUserWithEmailAndPassword(email, password)
       .then(userCredentials => {
         const user = userCredentials.user
         console.log("registered with: ", user.email)
-      }).catch(error => {
-        setAuthError(true)
       })
+      .catch(error => { setAuthError(true) })
+      .then(addToDatabase())
   }
 
   const onTosPressed = () => {
@@ -115,6 +124,7 @@ const SignUpScreen = ({ navigation }) => {
           <PrivacyPolicy />
         </Modal>
 
+        <StatusBar style="auto" />
       </SafeAreaView>
     </ScrollView>
   )

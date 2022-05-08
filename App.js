@@ -2,6 +2,8 @@ import React from 'react'
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import AppRoutes from './src/Navigation'
+import { LogBox } from 'react-native'
+LogBox.ignoreLogs(['Setting a timer'])
 
 const theme = {
   ...DefaultTheme,

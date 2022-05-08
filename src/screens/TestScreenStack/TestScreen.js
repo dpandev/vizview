@@ -18,49 +18,56 @@ export default function TestScreen({ navigation }) {
           style={styles.button}
           mode='text' 
           onPress={() => handleClick('SignIn')}>
-            SignIn
+            Sign In
         </Button>
         <Button 
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
           onPress={() => handleClick('SignUp')}>
-            SignUp
+            Sign Up
         </Button>
         <Button 
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
           onPress={() => handleClick('ConfirmEmail')}>
-            ConfirmEmail
+            Confirm Email
         </Button>
         <Button 
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
           onPress={() => handleClick('ForgotPassword')}>
-            ForgotPassword
+            Forgot Password
         </Button>
         <Button 
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
           onPress={() => handleClick('NewPassword')}>
-            NewPassword
+            New Password
         </Button>
         <Button 
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
           onPress={() => handleClick('VisitorForm')}>
-            VisitorForm
+            Visitor Form
         </Button>
         <Button 
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
           onPress={() => handleClick('VisitorCheckin')}>
-            VisitorCheckin
+            Visitor Checkin
+        </Button>
+        <Button 
+          labelStyle={styles.btnContent} 
+          style={styles.button}
+          mode='text' 
+          onPress={() => handleClick('PostCheckin')}>
+            Post Checkin
         </Button>
         <Button 
           labelStyle={styles.btnContent} 
@@ -74,14 +81,14 @@ export default function TestScreen({ navigation }) {
           style={styles.button}
           mode='text' 
           onPress={() => handleClick('HomeScreen')}>
-            HomeScreen
+            Home Screen
         </Button>
         <Button 
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
           onPress={() => handleClick('Settings')}>
-            SettingsScreen
+            Settings Screen
         </Button>
       </View>
     </ScrollView>
