@@ -17,27 +17,33 @@ const VisitorForm = ({ navigation }) => {
   const [name, setName] = useState('')
   const [barber, setBarber] = useState('')
   const [comment, setComment] = useState('')
-  const [hasError, setHasError] = useState(false)
-
-  const getBarbers = async () => {
-    let list = []
-    db.collection('barbers')
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          list.push({
-            ...doc.data(),
-            id: doc.id
-          })
-        })
-        setBarbersList(list)
-      })
-  }
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
-    const unsubscribe = getBarbers()
-    return unsubscribe
-  }, [barbersList, setBarbersList])
+    let mounted = true
+    const getBarbers = async () => {
+      let list = []
+      await db.collection('barbers')
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            list.push({
+              ...doc.data(),
+              id: doc.id
+            })
+          })
+        })
+        .then(() => {
+          if (mounted) {
+            setBarbersList(list)
+          }
+        })
+    }
+    getBarbers()
+    return function cleanUp() {
+      mounted = false
+    }
+  }, [barbersList])
 
   const validate = () => {
     let valid = true
@@ -52,15 +58,18 @@ const VisitorForm = ({ navigation }) => {
 
   const onCheckinPressed = () => {
     if (!validate()) {
-      setHasError(true)
+      setErrorMessage('Please make sure you enter your name and select a barber from the list.')
+      console.log(barber)
     } else {
-      db.collection('checkins').add({
-        name: name,
-        barber: barber,
-        comments: comment,
-        timeIn: new Date()
-      })
-      .then(navigation.navigate('PostCheckin'))
+      db.collection('barbers').where('id', '==', barber)
+        .collection('checkins')
+        .add({
+          name: name,
+          comments: comment,
+          createdAt: new Date()
+        })
+        .catch((error) => console.log(error))
+        .then(navigation.navigate('PostCheckin'))
     }
   }
 
@@ -99,13 +108,13 @@ const VisitorForm = ({ navigation }) => {
           text={"Back to Home"} 
           type="TERTIARY"
         />
-
+  
         <ErrorMessage 
-          visible={hasError} 
+          visible={errorMessage != null} 
           title={"Validation Error"}
-          message={"Please make sure you enter your name and select a barber from the list."} 
+          message={errorMessage} 
           button={"Close"}
-          onDismiss={setHasError} 
+          onDismiss={setErrorMessage} 
         />
         <StatusBar style="auto" />
       </SafeAreaView>

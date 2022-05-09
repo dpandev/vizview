@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Text } from 'react-native-paper'
@@ -7,6 +7,7 @@ import CustomButton from '../../components/CustomButton/CustomButton'
 import { auth, db } from '../../../firebase'
 
 export default function AdminSettings({ navigation }) {
+  const [userInfo, setUserInfo] = useState([])
   
   const settings = {
     test1: {
@@ -21,6 +22,26 @@ export default function AdminSettings({ navigation }) {
       name: 'Dark Mode',
       active: false,
     },
+  }
+
+  useEffect(() => {
+    const unsubscribe = getUserData()
+    return unsubscribe
+  }, [userInfo])
+
+  const getUserData = () => {
+    let data = []
+    const task = db.collection('barbers').where('email', '==', auth.currentUser.email).get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        data.push({
+          ...doc.data(),
+      })
+        setUserInfo(data[0])
+      })
+    }).catch((error) => {
+      console.log('Error: ', error)
+    })
+    return task
   }
 
   const onSignOutPressed = () => {
@@ -38,9 +59,20 @@ export default function AdminSettings({ navigation }) {
   return (
     <ScrollView>
       <SafeAreaView style={styles.container}>
-        <View>
-          <Text style={styles.title}>Settings</Text>
+        <Text style={styles.title}>Settings</Text>
+        <View style={styles.accountInfo}>
+          <Text>
+            <Text style={styles.textLeft}>{'Logged in as:'}</Text>{' '}
+            <Text style={styles.textRight}>{auth.currentUser?.email}</Text>
+          </Text>
         </View>
+        <View style={styles.accountInfo}>
+          <Text>
+            <Text style={styles.textLeft}>{'Username:'}</Text>{' '}
+            <Text style={styles.textRight}>{userInfo.name}</Text>
+          </Text>
+        </View>
+        
 
         {Object.values(settings).map((setting, index) => ( 
           //need to pass setting active state to toggle and send state back to here from toggle,or just update here seperately
@@ -65,10 +97,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
   },
+  accountInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   option: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    marginVertical: 15,
   },
   optionTextValue: {
     flex: 1,
@@ -78,5 +115,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 25,
     textAlign: 'center',
+  },
+  textLeft: {
+    flex: 1,
+    fontWeight: 'bold',
+    textAlign: 'right',
+  },
+  textRight: {
+    flex: 1,
+    fontWeight: 'bold',
+    color: 'tomato',
   },
 })

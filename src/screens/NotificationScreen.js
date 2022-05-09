@@ -1,6 +1,7 @@
-import React, { useState, useCallback } from 'react';
-import { StyleSheet, View, ScrollView, StatusBar, RefreshControl } from 'react-native';
-import { Button, Text } from 'react-native-paper';
+import React, { useState, useCallback } from 'react'
+import { StyleSheet, View, ScrollView, RefreshControl } from 'react-native'
+import { Text } from 'react-native-paper'
+import { auth, db } from '../../firebase'
 
 const wait = (timeout) => {
   return new Promise(resolve => setTimeout(resolve, timeout))
@@ -8,10 +9,55 @@ const wait = (timeout) => {
 
 export default function NotificationScreen() {
   const [refreshing, setRefreshing] = useState(false)
+  const [guestList, setGuestList] = useState([])
 
   const onRefresh = useCallback(() => {
+    console.log('hi')
     setRefreshing(true)
-    wait(2000).then(() => setRefreshing(false))
+    // wait(2000).then(() => setRefreshing(false))
+    console.log(auth.currentUser.email)
+    console.log(db.collection('barbers')
+    .where('email', '==', 'dpanesiu@yahoo.com')
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+          // doc.data() is never undefined for query doc snapshots
+          console.log(doc.id, " => ", doc.data())
+      })
+    })
+    .catch((error) => {
+        console.log("Error getting documents: ", error)
+    })
+    )
+    let mounted = true
+    const getNotifications = async () => {
+      let list = []
+      await db.collection('barbers')
+        .where('email', '==', auth.currentUser.email)
+        .collection('checkins').get()
+        .catch((error) => console.log(error))
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            list.push({
+              ...doc.data(),
+              name: doc.name,
+              comments: doc.comment,
+              time: doc.createdAt,
+            })
+          })
+        })
+        .then(() => {
+          if (mounted) {
+            setGuestList(list)
+            setRefreshing(false)
+          }
+        })
+    }
+    getNotifications().catch(error => setRefreshing(false))
+    return () => {
+      mounted = false
+      // setRefreshing(false)
+    }
   }, [])
 
   const notifications = {

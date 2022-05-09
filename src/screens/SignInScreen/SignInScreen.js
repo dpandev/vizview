@@ -3,6 +3,7 @@ import {
   ScrollView
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { StatusBar } from 'expo-status-bar'
 import React, { useState } from 'react'
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton'
@@ -14,15 +15,16 @@ import ErrorMessage from '../../components/ErrorMessage'
 const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [authError, setAuthError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   const onSignInPressed = () => {
     auth
       .signInWithEmailAndPassword(email, password)
       .then(userCredentials => {
         const user = userCredentials.user
+        console.log(user)
       }).catch(error => {
-        setAuthError(true)
+        setErrorMessage(error.message)
       })
   }
 
@@ -60,12 +62,13 @@ const SignInScreen = ({ navigation }) => {
           type='TERTIARY'
         />
         <ErrorMessage 
-          visible={authError} 
+          visible={errorMessage != null} 
           title={"Authentication Error"}
-          message={"User Login Failed. Please try again."} 
+          message={errorMessage} 
           button={"Close"}
-          onDismiss={setAuthError} 
+          onDismiss={setErrorMessage} 
         />
+        <StatusBar style="auto" />
       </SafeAreaView>
     </ScrollView>
   )

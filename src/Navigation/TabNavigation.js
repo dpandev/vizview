@@ -36,6 +36,7 @@ const TabNavigation = () => {
       <Tab.Screen name='Home' component={HomeStackScreen} options={{ headerShown: false }} />
       <Tab.Screen name='Notifications' component={NotificationScreen} options={{ headerShown: true, headerTitleAlign: 'center', }} />
       <Tab.Screen name='Settings' component={SettingsStackScreen} options={{ headerShown: false }} />
+      {/* will remove/replace TestScreenStack for prod */}
       <Tab.Screen name='TestStackScreen' component={TestStackScreen} options={{ headerShown: false }} />
     </Tab.Navigator>
   )
