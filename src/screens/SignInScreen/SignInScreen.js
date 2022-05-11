@@ -22,7 +22,6 @@ const SignInScreen = ({ navigation }) => {
       .signInWithEmailAndPassword(email, password)
       .then(userCredentials => {
         const user = userCredentials.user
-        console.log('signed in')
       }).catch(error => {
         setErrorMessage(error.message)
       })
@@ -37,7 +36,7 @@ const SignInScreen = ({ navigation }) => {
   }
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1}}>
       <SafeAreaView style={styles.root}>
         <Logo />
         <CustomInput 

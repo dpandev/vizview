@@ -157,7 +157,14 @@ const NotificationsScreen = () => {
   }
 
   return (  //TODO: logic to dynamically display notifications and details, add react-native refreshcontrol for pulldown action
-    <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+    <ScrollView 
+      refreshControl={
+        <RefreshControl 
+          refreshing={refreshing} 
+          onRefresh={onRefresh} 
+          contentContainerStyle={{flexGrow: 1}} 
+        />
+      }>
       <View style={styles.container}>
         {Object.values(notifications).map((item, id) => (
           <Text key={id} style={styles.button} onPress={handleClick}>
