@@ -8,16 +8,17 @@ import React, { useState } from 'react'
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton/CustomButton'
 
-const NewPasswordScreen = () => {
+const NewPasswordScreen = ({ navigation }) => {
   const [code, setCode] = useState('')
   const [password, setPassword] = useState('')
 
   const onSubmitPressed = () => {
     console.warn('Submit Pressed')
+    // navigation.navigate('')
   }
 
   const onSignInPressed = () => {
-    console.warn('SignIn Pressed')
+    navigation.navigate('SignIn')
   }
 
 

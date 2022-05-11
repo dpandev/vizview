@@ -1,29 +1,30 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet } from 'react-native';
-import { Button, Text } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React from 'react'
+import { StatusBar } from 'expo-status-bar'
+import { StyleSheet } from 'react-native'
+import { Text } from 'react-native-paper'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import Logo from '../../components/Logo/Logo'
+import CustomButton from '../../components/CustomButton/CustomButton'
 
-export default function CheckinScreen({ navigation }) {
+const VisitorCheckinScreen = ({ navigation }) => {
 
-  const btnExpand = () => {
-    console.log("Button Pressed")
+  const onBtnPressed = () => {
     navigation.navigate('VisitorForm')
   }
 
   return (
     <SafeAreaView style={styles.container}>
+      <Logo />
       <Text style={styles.titleText}>
         Welcome to
       </Text>
       <Text style={styles.companyText}>
         {'ProForm Cut & Shave'}
       </Text>
-      <Button onPress={btnExpand} labelStyle={styles.btnContent} mode='contained'>
-        Tap to check in
-      </Button>
+      <CustomButton onPress={onBtnPressed} text='Tap to check in' />
       <StatusBar style="auto" />
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -31,6 +32,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 20,
   },
   companyText: {
     fontSize: 34,
@@ -43,8 +45,6 @@ const styles = StyleSheet.create({
     fontSize: 30,
     marginBottom: 15,
   },
-  btnContent: {
-    fontSize: 18,
-    padding: 10,
-  }
-});
+})
+
+export default VisitorCheckinScreen

@@ -1,6 +1,11 @@
-import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Navbar from './src/components/Navbar';
+import React from 'react'
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import AppRoutes from './src/Navigation'
+import { LogBox } from 'react-native'
+
+LogBox.ignoreLogs(['Setting a timer'])
+LogBox.ignoreLogs(['AsyncStorage has been extracted from react-native core'])
 
 const theme = {
   ...DefaultTheme,
@@ -13,14 +18,14 @@ const theme = {
     //surface: 'blue',
   },
   // dark: true,
-};
+}
 
-export default function App() { //TODO show navbar only if logged in
-  return (  //TODO staff auth pages
+export default function App() {
+  return (
     <SafeAreaProvider>
       <PaperProvider theme={theme}>
-        <Navbar />
+        <AppRoutes />
       </PaperProvider>
     </SafeAreaProvider>
-  );
-};
+  )
+}

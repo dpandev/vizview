@@ -1,18 +1,30 @@
 import React from 'react'
 import CustomButton from '../CustomButton/CustomButton'
+import { auth } from '../../../firebase'
 
 const SocialLoginButtons = () => {
 
   const onSignInApple = () => {
-    console.warn('Sign In')
+    console.warn('Sign In Apple')
   }
 
   const onSignInGoogle = () => {
-    console.warn('Sign In')
+    const provider = new firebase.auth.GoogleAuthProvider()
+    auth
+      .signInWithPopup(provider).then((result) => {
+        let token = result.credential.accessToken
+        let user = result.user
+        console.log(token)
+        console.log(user)
+      }).catch(error => alert(error.message))
   }
 
   const onSignInFacebook = () => {
-    console.warn('Sign In')
+    console.warn('Sign In Facebook')
+  }
+
+  const onSignInWithPhone = () => {
+    console.warn('Sign In Phone')
   }
 
   return (
@@ -34,6 +46,12 @@ const SocialLoginButtons = () => {
       text={"Sign In with Facebook"} 
       bgColor='#E7EAF4'
       fgColor='#4765A9'
+    />
+    <CustomButton 
+      onPress={onSignInWithPhone} 
+      text={"Sign In with your Phone"} 
+      bgColor='#CBF5CE'
+      fgColor='#11BE1B'
     />
     </>
   )

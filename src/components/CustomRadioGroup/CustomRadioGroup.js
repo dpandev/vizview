@@ -12,18 +12,17 @@ const CustomRadioButton = ({ value, label }) => {
 }
 
 const CustomRadioGroup = ({ value, setValue, options }) => {
-  //delete options.key
-
+  
   return (
     <RadioButton.Group 
       value={value}
       onValueChange={setValue}
     >
-      {Object.values(options).map((item, id) => (
+      {options.map((item, id) => (
         <CustomRadioButton 
           key={id}
-          value={item.value} 
-          label={item.label} 
+          value={item.id} 
+          label={item.name} 
         />
       ))}
     </RadioButton.Group>

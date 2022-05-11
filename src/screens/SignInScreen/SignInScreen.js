@@ -1,71 +1,73 @@
 import { 
-  View, 
-  Text,
-  Image, 
-  StyleSheet, 
-  useWindowDimensions, 
-  ScrollView, 
-  KeyboardAvoidingView 
+  StyleSheet,  
+  ScrollView
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { StatusBar } from 'expo-status-bar'
 import React, { useState } from 'react'
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton'
-import Logo from '../../../assets/images/ProFormBarberLogo.png'
+import Logo from '../../components/Logo'
 import SocialLoginButtons from '../../components/SocialLoginButtons'
+import {auth} from '../../../firebase'
+import ErrorMessage from '../../components/ErrorMessage'
 
-const SignInScreen = () => {
-  const [username, setUsername] = useState('')
+const SignInScreen = ({ navigation }) => {
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
-  const {height} = useWindowDimensions()
+  const [errorMessage, setErrorMessage] = useState(null)
 
   const onSignInPressed = () => {
-    console.warn('Sign In')
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then(userCredentials => {
+        const user = userCredentials.user
+      }).catch(error => {
+        setErrorMessage(error.message)
+      })
   }
 
   const onForgotPasswordPressed = () => {
-    console.warn('Forgot Password')
+    navigation.navigate('ForgotPassword')
   }
 
   const onSignupPressed = () => {
-    console.warn('Register Pressed')
+    navigation.navigate('SignUp')
   }
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1}}>
       <SafeAreaView style={styles.root}>
-        {/* <KeyboardAvoidingView 
-          behavior={ Platform.OS === 'ios' ? 'padding' : 'height' }
-          style={{ flex: 1 }}
-        > */}
-          <Image 
-            source={Logo} 
-            style={[styles.logo, {height: height * 0.3}]} 
-            resizeMode='contain' 
-          />
-          <CustomInput 
-            placeholder='Username' 
-            value={username} 
-            setValue={setUsername} 
-          />
-          <CustomInput 
-            placeholder='Password' 
-            value={password} 
-            setValue={setPassword} 
-            secureTextEntry 
-          />
-          <CustomButton onPress={onSignInPressed} text={"Sign In"} />
-          <CustomButton onPress={onForgotPasswordPressed} text={"Forgot Password?"} type='TERTIARY' />
+        <Logo />
+        <CustomInput 
+          placeholder='Email' 
+          value={email} 
+          setValue={setEmail} 
+        />
+        <CustomInput 
+          placeholder='Password' 
+          value={password} 
+          setValue={setPassword} 
+          secureTextEntry 
+        />
+        <CustomButton onPress={onSignInPressed} text={"Sign In"} />
+        <CustomButton onPress={onForgotPasswordPressed} text={"Forgot Password?"} type='TERTIARY' />
 
-          <SocialLoginButtons />
+        <SocialLoginButtons />
 
-          <CustomButton
-            onPress={onSignupPressed}
-            text={"Don't have an account? Create one"}
-            type='TERTIARY'
-          />
-        {/* </KeyboardAvoidingView> */}
+        <CustomButton
+          onPress={onSignupPressed}
+          text={"Don't have an account? Create one"}
+          type='TERTIARY'
+        />
+        <ErrorMessage 
+          visible={errorMessage != null} 
+          title={"Authentication Error"}
+          message={errorMessage} 
+          button={"Close"}
+          onDismiss={setErrorMessage} 
+        />
+        <StatusBar style="auto" />
       </SafeAreaView>
     </ScrollView>
   )

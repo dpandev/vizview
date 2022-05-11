@@ -1,11 +1,11 @@
+import React from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native'
-import { Button, Text } from 'react-native-paper'
+import { Button } from 'react-native-paper'
 
 export default function TestScreen({ navigation }) {
 
   const handleClick = (value) => {
-    console.log("Button Pressed")
-    console.log(value)
+    console.log('TestScreen: ', value)
     navigation.navigate(value)
   }
 
@@ -16,85 +16,78 @@ export default function TestScreen({ navigation }) {
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
-          onPress={() => handleClick('SignInScreen')}>
-            SignIn
+          onPress={() => handleClick('SignIn')}>
+            Sign In
         </Button>
         <Button 
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
-          onPress={() => handleClick('SignUpScreen')}>
-            SignUp
+          onPress={() => handleClick('SignUp')}>
+            Sign Up
         </Button>
         <Button 
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
-          onPress={() => handleClick('ConfirmEmailScreen')}>
-            ConfirmEmail
+          onPress={() => handleClick('ConfirmEmail')}>
+            Confirm Email
         </Button>
         <Button 
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
-          onPress={() => handleClick('ForgotPasswordScreen')}>
-            ForgotPassword
+          onPress={() => handleClick('ForgotPassword')}>
+            Forgot Password
         </Button>
         <Button 
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
-          onPress={() => handleClick('NewPasswordScreen')}>
-            NewPassword
+          onPress={() => handleClick('NewPassword')}>
+            New Password
         </Button>
         <Button 
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
-          onPress={() => handleClick('LoginForm')}>
-            Login
+          onPress={() => handleClick('VisitorForm')}>
+            Visitor Form
         </Button>
         <Button 
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
-          onPress={() => handleClick('RegisterForm')}>
-            Register
+          onPress={() => handleClick('VisitorCheckin')}>
+            Visitor Checkin
         </Button>
         <Button 
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
-          onPress={() => handleClick('CheckinScreen')}>
-            CheckinScreen
+          onPress={() => handleClick('PostCheckin')}>
+            Post Checkin
         </Button>
         <Button 
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
-          onPress={() => handleClick('VisitorFormScreen')}>
-            VisitorForm
-        </Button>
-        <Button 
-          labelStyle={styles.btnContent} 
-          style={styles.button}
-          mode='text' 
-          onPress={() => handleClick('NotificationScreen')}>
+          onPress={() => handleClick('Notifications')}>
             Notifications
         </Button>
         <Button 
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
-          onPress={() => handleClick('HomeStackScreen')}>
-            HomeStackScreen
+          onPress={() => handleClick('HomeScreen')}>
+            Home Screen
         </Button>
         <Button 
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
-          onPress={() => handleClick('SettingsStackScreen')}>
-            SettingsStackScreen
+          onPress={() => handleClick('Settings')}>
+            Settings Screen
         </Button>
       </View>
     </ScrollView>

@@ -6,37 +6,54 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context'
 import React, { useState } from 'react'
 import CustomInput from '../../components/CustomInput'
-import CustomButton from '../../components/CustomButton/CustomButton'
+import CustomButton from '../../components/CustomButton'
+import ErrorMessage from '../../components/ErrorMessage'
+import { auth } from '../../../firebase'
 
-const ForgotPasswordScreen = () => {
-  const [username, setUsername] = useState('')
+const ForgotPasswordScreen = ({ navigation }) => {
+  const [email, setEmail] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
 
   const onSendPressed = () => {
-    console.warn('Confirm Pressed')
+    auth
+      .sendPasswordResetEmail(email)
+      .then(() => {
+        setErrorMessage('Password reset email has been sent!')
+      })
+      .catch((error) => {
+        setErrorMessage('There was a problem sending the request. Please try again.')
+      })
   }
 
   const onSignInPressed = () => {
-    console.warn('SignIn Pressed')
+    navigation.goBack()
   }
 
-
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1}}>
       <SafeAreaView style={styles.root}>
         <Text style={styles.title}>Reset your password</Text>
 
         <CustomInput 
-          placeholder='Enter your username' 
-          value={username} 
-          setValue={setUsername} 
+          placeholder='Enter your email' 
+          value={email} 
+          setValue={setEmail} 
         />
 
         <CustomButton onPress={onSendPressed} text={"Send"} />
 
         <CustomButton
           onPress={onSignInPressed} 
-          text={"Back to Sign in"} 
+          text={"Go Back"} 
           type="TERTIARY"
+        />
+
+        <ErrorMessage 
+          visible={errorMessage != null}
+          title='Password Reset'
+          message={errorMessage}
+          button={"Close"}
+          onDismiss={setErrorMessage}
         />
         
       </SafeAreaView>

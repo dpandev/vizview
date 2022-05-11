@@ -4,48 +4,80 @@ import {
   ScrollView
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import React, { useState } from 'react'
+import { StatusBar } from 'expo-status-bar'
+import React, { useState, useEffect } from 'react'
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton/CustomButton'
 import CustomRadioGroup from '../../components/CustomRadioGroup'
+import { db } from '../../../firebase'
+import ErrorMessage from '../../components/ErrorMessage'
 
-const VisitorForm = () => {
-  const barbers = {
-    barber1: {
-      value: 'Mike',
-      label: 'Mike',
-    },
-    barber2: {
-      value: 'Kelly',
-      label: 'Kelly',
-    },
-    barber3: {
-      value: 'Eric',
-      label: 'Eric',
-    },
-    barber4: {
-      value: 'Alycia',
-      label: 'Alycia',
-    },
-    barber5: {
-      value: 'Sean',
-      label: 'Sean',
-    },
-    // key: function(n) {
-    //   return this[Object.keys(this)[n]]
-    // },
-  }
-
+const VisitorForm = ({ navigation }) => {
+  const [barbersList, setBarbersList] = useState([])
   const [name, setName] = useState('')
   const [barber, setBarber] = useState('')
   const [comment, setComment] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
+
+  useEffect(() => {
+    let mounted = true
+    const getBarbers = async () => {
+      let list = []
+      await db.collection('barbers')
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            list.push({
+              ...doc.data(),
+              id: doc.id
+            })
+          })
+        })
+        .then(() => {
+          if (mounted) {
+            setBarbersList(list)
+          }
+        })
+    }
+    getBarbers()
+    return function cleanUp() {
+      mounted = false
+    }
+  }, [])
+
+  const validate = () => {
+    let valid = true
+    if (name === '') {
+      valid = false
+    }
+    if (barber === '') {
+      valid = false
+    }
+    return valid
+  }
 
   const onCheckinPressed = () => {
-    console.warn('Checkin Pressed')
+    if (!validate()) {
+      setErrorMessage('Please make sure you enter your name and select a barber from the list.')
+    } else {
+      db.collection('barbers').doc(barber)
+        .collection('checkins')
+        .add({
+          name: name,
+          comment: comment,
+          createdAt: new Date()
+        })
+        .catch((error) => console.log(error))
+        .then(navigation.navigate('PostCheckin'))
+    }
+  }
+
+  const onBackToHomePressed = () => {
+    navigation.navigate('VisitorCheckin')
   }
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    // <ScrollView showsVerticalScrollIndicator={false}>
       <SafeAreaView style={styles.root}>
         <Text style={styles.title}>Please fill out the form below</Text>
         <CustomInput 
@@ -54,23 +86,38 @@ const VisitorForm = () => {
           setValue={setName} 
         />
 
-        <Text style={styles.text}>{"Which barber do you have an appointment with?"}</Text>
+        <Text style={styles.text}>{"Which barber do you have an appointment with? (Select one)"}</Text>
 
         <CustomRadioGroup 
           value={barber} 
           setValue={setBarber} 
-          options={barbers}
+          options={barbersList}
         />
 
         <CustomInput 
-          placeholder='Additional Comments' 
+          placeholder='Additional Comments (optional)' 
           value={comment} 
           setValue={setComment} 
         />
 
         <CustomButton onPress={onCheckinPressed} text={"Check in"} />
+
+        <CustomButton
+          onPress={onBackToHomePressed} 
+          text={"Back to Home"} 
+          type="TERTIARY"
+        />
+  
+        <ErrorMessage 
+          visible={errorMessage != null} 
+          title={"Incomplete Form"}
+          message={errorMessage} 
+          button={"Close"}
+          onDismiss={setErrorMessage} 
+        />
+        <StatusBar style="auto" />
       </SafeAreaView>
-    </ScrollView>
+    // </ScrollView>
   )
 }
 
@@ -78,6 +125,7 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     padding: 20,
+    justifyContent: 'center',
   },
   title: {
     fontSize: 24,

@@ -1,42 +1,25 @@
-import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, View } from 'react-native'
-import { Button, Text } from 'react-native-paper'
+import React from 'react'
+import { StyleSheet } from 'react-native'
+import { Text } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import LogoTitle from '../../components/LogoTitle'
+import Logo from '../../components/Logo'
+import { auth } from '../../../firebase'
+import CustomButton from '../../components/CustomButton'
 
-export default function HomeScreen({ navigation }) {
+const HomeScreen = ({ navigation }) => {
 
-  const handleClick = (value) => {
-    console.log("Button Pressed")
-    console.log(value)
-    if (value === 'register') {
-      navigation.navigate('SignUpScreen')
-    } else {
-      navigation.navigate('SignInScreen')
-    }
+  const onSignOut = () => {
+    auth.signOut()
   }
 
-  return (  //if logged in, display alt screen
+  return (
     <SafeAreaView style={styles.container}>
-      <LogoTitle />
+      <Logo />
       <Text style={styles.brandText}>
         {'VizView'}
       </Text>
-      <Button 
-        labelStyle={styles.btnContent} 
-        style={styles.button}
-        mode='text' 
-        onPress={() => handleClick('login')}>
-          Login
-      </Button>
-      <Button 
-        labelStyle={styles.btnContent} 
-        style={styles.button}
-        mode='text' 
-        onPress={() => handleClick('register')}>
-          Register
-      </Button>
-      <StatusBar style="auto" />
+      <Text>Email: {auth.currentUser?.email}</Text>
+      <CustomButton onPress={onSignOut} text='Sign out' />
     </SafeAreaView>
   );
 }
@@ -46,25 +29,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 20,
   },
   brandText: {
     fontSize: 34,
     fontWeight: '700',
     marginBottom: 75,
   },
-  titleText: {
-    textAlign: 'center',
-    fontWeight: '700',
-    fontSize: 30,
-    marginBottom: 15,
-  },
-  button: {
-    width: '80%',
-    marginBottom: 25,
-  },
-  btnContent: {
-    fontSize: 18,
-    fontWeight: '600',
-    padding: 10,
-  }
 })
+
+export default HomeScreen

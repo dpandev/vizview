@@ -1,17 +1,56 @@
-import { useState, useCallback } from 'react';
-import { StyleSheet, View, ScrollView, StatusBar, RefreshControl } from 'react-native';
-import { Button, Text } from 'react-native-paper';
+import React, { useState, useCallback } from 'react'
+import { StyleSheet, View, ScrollView, RefreshControl } from 'react-native'
+import { Text } from 'react-native-paper'
+import { db, auth } from '../../../firebase'
 
 const wait = (timeout) => {
   return new Promise(resolve => setTimeout(resolve, timeout))
 }
 
-export default function NotificationScreen() {
+const NotificationsScreen = () => {
   const [refreshing, setRefreshing] = useState(false)
+  const [guestList, setGuestList] = useState([])
 
   const onRefresh = useCallback(() => {
+    console.log('RSM. notifications')
     setRefreshing(true)
-    wait(2000).then(() => setRefreshing(false))
+    // wait(2000).then(() => setRefreshing(false))
+    let mounted = true
+    const getNotifications = async () => {
+      let list = []
+      console.log('operation begin')
+      await db.collection('barbers')
+        .where('email', '==', auth.currentUser.email)
+        .collection('checkins').get()
+        .catch((error) => console.log(error))
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            list.push({
+              ...doc.data(),
+              name: doc.name,
+              comments: doc.comment,
+              time: doc.createdAt,
+            }),
+            console.log('list was created')
+          })
+        })
+        .then(() => {
+          console.log('mounted?:', mounted)
+          if (mounted) {
+            setGuestList(list)
+            setRefreshing(false)
+          }
+        })
+        console.log('operation ran')
+    }
+    console.log('before the function')
+    console.log("data: => ", db.collection('barbers').where('email', '==', auth.currentUser.email))
+    getNotifications().catch(() => setRefreshing(false), console.log('caught something'))
+    return () => {
+      mounted = false
+      console.log('unmounting')
+      setRefreshing(false)
+    }
   }, [])
 
   const notifications = {
@@ -118,7 +157,14 @@ export default function NotificationScreen() {
   }
 
   return (  //TODO: logic to dynamically display notifications and details, add react-native refreshcontrol for pulldown action
-    <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+    <ScrollView 
+      refreshControl={
+        <RefreshControl 
+          refreshing={refreshing} 
+          onRefresh={onRefresh} 
+          contentContainerStyle={{flexGrow: 1}} 
+        />
+      }>
       <View style={styles.container}>
         {Object.values(notifications).map((item, id) => (
           <Text key={id} style={styles.button} onPress={handleClick}>
@@ -130,7 +176,7 @@ export default function NotificationScreen() {
         ))}
       </View>
     </ScrollView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -160,4 +206,6 @@ const styles = StyleSheet.create({
   noDisplay: {
     display: 'none',
   },
-});
+})
+
+export default NotificationsScreen

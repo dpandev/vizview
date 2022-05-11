@@ -1,8 +1,10 @@
-import { StyleSheet, StatusBar } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import AdminSettings from './AdminSettings';
+import React from 'react'
+import { StyleSheet, StatusBar } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import AdminSettings from './AdminSettings'
+import DefaultSettings from './DefaultSettings'
 
-export default function SettingsScreen({ navigation }) {
+const SettingsScreen = ({ navigation }) => {
   
   const settings = {
     test1: {
@@ -21,9 +23,9 @@ export default function SettingsScreen({ navigation }) {
 
   return (
     <SafeAreaView>
-      <AdminSettings />
+      <DefaultSettings />
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -33,4 +35,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: Platform.OS === 'android' ? StatusBar.currentHeight + 30 : 0,
   },
-});
+})
+
+export default SettingsScreen
