@@ -1,10 +1,10 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import NotificationScreen from '../screens/NotificationScreen'
-import SettingsStackScreen from '../screens/SettingsScreen/SettingsStackScreen'
+import NotificationScreen from '../screens/NotificationsScreen'
+import SettingsStackScreen from './SettingsStack'
 import HomeStackScreen from './HomeStack'
-import TestStackScreen from '../screens/TestScreenStack/TestStackScreen'
+import TestStack from './TestStack'
 
 const Tab = createBottomTabNavigator()
 
@@ -22,7 +22,7 @@ const TabNavigation = () => {
             iconName = 'settings'
           } else if (route.name === 'Notifications') {
             iconName = 'notifications'
-          } else if (route.name === 'TestStackScreen') {
+          } else if (route.name === 'TestStack') {
             iconName = 'build'
           }
 
@@ -37,7 +37,7 @@ const TabNavigation = () => {
       <Tab.Screen name='Notifications' component={NotificationScreen} options={{ headerShown: true, headerTitleAlign: 'center', }} />
       <Tab.Screen name='Settings' component={SettingsStackScreen} options={{ headerShown: false }} />
       {/* will remove/replace TestScreenStack for prod */}
-      <Tab.Screen name='TestStackScreen' component={TestStackScreen} options={{ headerShown: false }} />
+      <Tab.Screen name='TestStack' component={TestStack} options={{ headerShown: false }} />
     </Tab.Navigator>
   )
 }

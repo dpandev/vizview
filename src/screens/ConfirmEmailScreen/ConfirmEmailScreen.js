@@ -6,51 +6,101 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context'
 import React, { useState } from 'react'
 import CustomInput from '../../components/CustomInput'
-import CustomButton from '../../components/CustomButton/CustomButton'
+import CustomButton from '../../components/CustomButton'
+import ErrorMessage from '../../components/ErrorMessage'
+import { auth } from '../../../firebase'
 
 const ConfirmEmailScreen = ({ navigation }) => {
-  const [username, setUsername] = useState('')
-  const [code, setCode] = useState('')
+  const [email, setEmail] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [errorTitle, setErrorTitle] = useState('')
+  const [signOutPressed, setSignOutPressed] = useState(false)
+  const [isLinkSent, setIsLinkSent] = useState(false)
 
-  const onConfirmPressed = () => {
-    console.warn('Confirm Pressed')
+  const isValid = () => {
+    return auth.currentUser.email === email
   }
 
-  const onSignInPressed = () => {
-    console.warn('SignIn Pressed')
+  const onConfirmPressed = () => {
+    console.log('op begin')
+    console.log('isValid?: ', isValid())
+    isValid() ? (
+      auth.currentUser
+        .sendEmailVerification()
+        .catch(() => {
+          setErrorTitle("Authentication Error")
+          setErrorMessage("There was a problem sending the request. Please try again.")
+        })
+        .then(() => {
+          setErrorTitle("Check your email")
+          setErrorMessage("A verification link has been sent to your email.")
+          setIsLinkSent(true)
+        })
+    ) : (
+      setErrorTitle("Validation Error"),
+      setErrorMessage("Please use the email address you signed up with.")
+    )
+  }
+
+  const signOut = () => {
+    auth.signOut().then(console.log('signed out successfully'))
+  }
+
+  const onBackToSignInPressed = () => {
+    setSignOutPressed(true)
   }
 
   const onResendPressed = () => {
-    console.warn('Resend Pressed')
+    //TODO: "can send again in 5 minutes..."
+    onConfirmPressed()
   }
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1}}>
       <SafeAreaView style={styles.root}>
         <Text style={styles.title}>Confirm your email</Text>
 
         <CustomInput 
-          placeholder='Enter your username' 
-          value={username} 
-          setValue={setUsername} 
-        />
-        <CustomInput 
-          placeholder='Enter you confirmation code' 
-          value={code} 
-          setValue={setCode} 
+          placeholder='Enter your email' 
+          value={email} 
+          setValue={setEmail} 
         />
 
-        <CustomButton onPress={onConfirmPressed} text={"Confirm"} />
+        {isLinkSent ? (
+          <CustomButton
+            onPress={onResendPressed} 
+            text={"Resend Link"} 
+            type="SECONDARY"
+          />
+        ) : (
+          <CustomButton 
+            onPress={onConfirmPressed} 
+            text={"Send Verification Link"} 
+          />
+        )}
 
         <CustomButton
-          onPress={onResendPressed} 
-          text={"Resend code"} 
-          type="SECONDARY"
-        />
-        <CustomButton
-          onPress={onSignInPressed} 
+          onPress={onBackToSignInPressed} 
           text={"Back to Sign in"} 
           type="TERTIARY"
+        />
+
+        <ErrorMessage
+          visible={signOutPressed}
+          title={"Are you sure?"}
+          message="You will be automatically signed out if you choose to go back to the sign in screen."
+          button="Stay"
+          onDismiss={setSignOutPressed}
+          button2="Go back"
+          onButton2Press={signOut}
+        />
+
+        <ErrorMessage 
+          visible={errorMessage != null}
+          title={errorTitle}
+          message={errorMessage}
+          button={"Close"}
+          onDismiss={setErrorMessage}
         />
         
       </SafeAreaView>

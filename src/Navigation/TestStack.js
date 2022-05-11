@@ -1,18 +1,18 @@
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import TestScreen from './TestScreen'
-import SignInScreen from '../SignInScreen'
-import SignUpScreen from '../SignUpScreen'
-import VisitorCheckinScreen from '../VisitorCheckinScreen'
-import NotificationScreen from '../NotificationScreen'
-import SettingsScreen from '../SettingsScreen/SettingsScreen'
-import ConfirmEmailScreen from '../ConfirmEmailScreen'
-import ForgotPasswordScreen from '../ForgotPasswordScreen'
-import NewPasswordScreen from '../NewPasswordScreen'
-import HomeScreen from '../Home/HomeScreen'
-import PostCheckinScreen from '../PostCheckinScreen'
+import TestScreen from '../screens/TestScreen'
+import SignInScreen from '../screens/SignInScreen'
+import SignUpScreen from '../screens/SignUpScreen'
+import VisitorCheckinScreen from '../screens/VisitorCheckinScreen'
+import NotificationScreen from '../screens/NotificationsScreen'
+import SettingsScreen from '../screens/SettingsScreen'
+import ConfirmEmailScreen from '../screens/ConfirmEmailScreen'
+import ForgotPasswordScreen from '../screens/ForgotPasswordScreen'
+import NewPasswordScreen from '../screens/NewPasswordScreen'
+import HomeScreen from '../screens/Home/HomeScreen'
+import PostCheckinScreen from '../screens/PostCheckinScreen'
 
-export default function TestStackScreen() {
+const TestStack = () => {
   const TestStack = createNativeStackNavigator()
   return (
     <TestStack.Navigator>
@@ -30,3 +30,5 @@ export default function TestStackScreen() {
     </TestStack.Navigator>
   )
 }
+
+export default TestStack

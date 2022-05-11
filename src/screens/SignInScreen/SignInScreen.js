@@ -22,7 +22,7 @@ const SignInScreen = ({ navigation }) => {
       .signInWithEmailAndPassword(email, password)
       .then(userCredentials => {
         const user = userCredentials.user
-        console.log(user)
+        console.log('signed in')
       }).catch(error => {
         setErrorMessage(error.message)
       })

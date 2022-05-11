@@ -43,7 +43,7 @@ const VisitorForm = ({ navigation }) => {
     return function cleanUp() {
       mounted = false
     }
-  }, [barbersList])
+  }, [])
 
   const validate = () => {
     let valid = true
@@ -59,13 +59,12 @@ const VisitorForm = ({ navigation }) => {
   const onCheckinPressed = () => {
     if (!validate()) {
       setErrorMessage('Please make sure you enter your name and select a barber from the list.')
-      console.log(barber)
     } else {
-      db.collection('barbers').where('id', '==', barber)
+      db.collection('barbers').doc(barber)
         .collection('checkins')
         .add({
           name: name,
-          comments: comment,
+          comment: comment,
           createdAt: new Date()
         })
         .catch((error) => console.log(error))
@@ -111,7 +110,7 @@ const VisitorForm = ({ navigation }) => {
   
         <ErrorMessage 
           visible={errorMessage != null} 
-          title={"Validation Error"}
+          title={"Incomplete Form"}
           message={errorMessage} 
           button={"Close"}
           onDismiss={setErrorMessage} 

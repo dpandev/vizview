@@ -4,9 +4,10 @@ export const AuthenticatedUserContext = createContext({})
 
 export const AuthenticatedUserProvider = ({ children }) => {
   const [user, setUser] = useState(null)
+  const [isVerified, setIsVerified] = useState(false)
 
   return (
-    <AuthenticatedUserContext.Provider value={{ user, setUser }}>
+    <AuthenticatedUserContext.Provider value={{ user, setUser, isVerified, setIsVerified }}>
       {children}
     </AuthenticatedUserContext.Provider>
   )

@@ -1,12 +1,11 @@
 import React from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native'
-import { Button, Text } from 'react-native-paper'
+import { Button } from 'react-native-paper'
 
 export default function TestScreen({ navigation }) {
 
   const handleClick = (value) => {
-    console.log("Button Pressed")
-    console.log(value)
+    console.log('TestScreen: ', value)
     navigation.navigate(value)
   }
 

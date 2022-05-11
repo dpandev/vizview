@@ -37,16 +37,19 @@ const SignUpScreen = ({ navigation }) => {
       .then(userCredentials => {
         const user = userCredentials.user
         const addToDatabase = () => {
-          db.collection('barbers').add({
+          db.collection('barbers')
+          .doc(email)
+          .set({
             name: username,
             email: email,
             createdAt: new Date()
           })
-          db.collection('users').add({
-            name: username,
-            email: email,
-            createdAt: new Date()
-          })
+          // db.collection('users')
+          // .add({
+          //   name: username,
+          //   email: email,
+          //   createdAt: new Date()
+          // })
         }
         addToDatabase()
       })

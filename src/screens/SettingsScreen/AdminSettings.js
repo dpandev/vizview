@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Text } from 'react-native-paper'
-import ToggleSwitch from './ToggleSwitch'
-import CustomButton from '../../components/CustomButton/CustomButton'
+import ToggleSwitch from '../../components/ToggleSwitch'
+import CustomButton from '../../components/CustomButton'
 import { auth, db } from '../../../firebase'
 
-export default function AdminSettings({ navigation }) {
+const AdminSettings = ({ navigation }) => { //copy of DefaultSettings rn, will need to change
   const [userInfo, setUserInfo] = useState([])
   
   const settings = {
@@ -27,7 +27,7 @@ export default function AdminSettings({ navigation }) {
   useEffect(() => {
     const unsubscribe = getUserData()
     return unsubscribe
-  }, [userInfo])
+  }, [])
 
   const getUserData = () => {
     let data = []
@@ -127,3 +127,5 @@ const styles = StyleSheet.create({
     color: 'tomato',
   },
 })
+
+export default AdminSettings

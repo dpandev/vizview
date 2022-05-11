@@ -1,37 +1,24 @@
 import React, { useState, useCallback } from 'react'
 import { StyleSheet, View, ScrollView, RefreshControl } from 'react-native'
 import { Text } from 'react-native-paper'
-import { auth, db } from '../../firebase'
+import { db, auth } from '../../../firebase'
 
 const wait = (timeout) => {
   return new Promise(resolve => setTimeout(resolve, timeout))
 }
 
-export default function NotificationScreen() {
+const NotificationsScreen = () => {
   const [refreshing, setRefreshing] = useState(false)
   const [guestList, setGuestList] = useState([])
 
   const onRefresh = useCallback(() => {
-    console.log('hi')
+    console.log('RSM. notifications')
     setRefreshing(true)
     // wait(2000).then(() => setRefreshing(false))
-    console.log(auth.currentUser.email)
-    console.log(db.collection('barbers')
-    .where('email', '==', 'dpanesiu@yahoo.com')
-    .get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-          // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data())
-      })
-    })
-    .catch((error) => {
-        console.log("Error getting documents: ", error)
-    })
-    )
     let mounted = true
     const getNotifications = async () => {
       let list = []
+      console.log('operation begin')
       await db.collection('barbers')
         .where('email', '==', auth.currentUser.email)
         .collection('checkins').get()
@@ -43,20 +30,26 @@ export default function NotificationScreen() {
               name: doc.name,
               comments: doc.comment,
               time: doc.createdAt,
-            })
+            }),
+            console.log('list was created')
           })
         })
         .then(() => {
+          console.log('mounted?:', mounted)
           if (mounted) {
             setGuestList(list)
             setRefreshing(false)
           }
         })
+        console.log('operation ran')
     }
-    getNotifications().catch(error => setRefreshing(false))
+    console.log('before the function')
+    console.log("data: => ", db.collection('barbers').where('email', '==', auth.currentUser.email))
+    getNotifications().catch(() => setRefreshing(false), console.log('caught something'))
     return () => {
       mounted = false
-      // setRefreshing(false)
+      console.log('unmounting')
+      setRefreshing(false)
     }
   }, [])
 
@@ -176,7 +169,7 @@ export default function NotificationScreen() {
         ))}
       </View>
     </ScrollView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -206,4 +199,6 @@ const styles = StyleSheet.create({
   noDisplay: {
     display: 'none',
   },
-});
+})
+
+export default NotificationsScreen
