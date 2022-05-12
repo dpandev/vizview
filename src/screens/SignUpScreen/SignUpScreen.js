@@ -42,14 +42,9 @@ const SignUpScreen = ({ navigation }) => {
           .set({
             name: username,
             email: email,
-            createdAt: new Date()
+            createdAt: new Date(),
+            tokens: [],
           })
-          // db.collection('users')
-          // .add({
-          //   name: username,
-          //   email: email,
-          //   createdAt: new Date()
-          // })
         }
         addToDatabase()
       })
