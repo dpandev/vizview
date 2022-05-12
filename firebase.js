@@ -1,6 +1,4 @@
 // Import the functions you need from the SDKs you need
-import * as firebase from 'firebase'
-import 'firebase/firestore'
 import {
   API_KEY,
   AUTH_DOMAIN,
@@ -9,6 +7,11 @@ import {
   MSG_SENDER_ID,
   APP_ID
 } from '@env'
+
+import firebase from 'firebase/compat/app'
+import 'firebase/compat/auth'
+import 'firebase/compat/firestore'
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -32,5 +35,6 @@ if (firebase.apps.length === 0) {
 
 const auth = firebase.auth()
 const db = firebase.firestore()
+const FieldValue = firebase.firestore.FieldValue
 
-export { auth, db }
+export { auth, db, firebase }
