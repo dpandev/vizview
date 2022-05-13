@@ -65,13 +65,11 @@ async function setDeviceToken(email) {
 }
 
 export default function App() {
-  useEffect(() => {
-    (async () => {
-      auth.onAuthStateChanged((user) => {
-        if (user) {
-          setDeviceToken(user.email)
-        }
-      })
+  useEffect(async () => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        setDeviceToken(user.email)
+      }
     })
   })
 
