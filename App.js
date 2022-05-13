@@ -32,8 +32,6 @@ Notifications.setNotificationHandler({
   })
 })
 
-
-
 async function setDeviceToken(email) {
   let token
 
@@ -52,8 +50,6 @@ async function setDeviceToken(email) {
     token = (await Notifications.getExpoPushTokenAsync()).data
   }
 
-  console.log(token)
-
   db.collection('barbers').doc(email).update({
     tokens: firebase.firestore.FieldValue.arrayUnion(token)
   })
@@ -69,11 +65,13 @@ async function setDeviceToken(email) {
 }
 
 export default function App() {
-  useEffect(async () => {
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        setDeviceToken(user.email)
-      }
+  useEffect(() => {
+    (async () => {
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          setDeviceToken(user.email)
+        }
+      })
     })
   })
 
