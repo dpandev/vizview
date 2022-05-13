@@ -69,6 +69,8 @@ const VisitorForm = ({ navigation }) => {
         })
         .catch((error) => console.log(error))
         .then(navigation.navigate('PostCheckin'))
+
+        sendNotification(barber)
     }
   }
 
@@ -76,9 +78,37 @@ const VisitorForm = ({ navigation }) => {
     navigation.navigate('VisitorCheckin')
   }
 
+  const debugSendNotification = () => {
+    sendNotification()
+  }
+
+  const sendNotification = async () => {
+    let tokens = await db.collection('barbers')
+      .doc(barber)
+      .get()
+      .then(doc => doc.get('tokens'))
+
+    tokens.forEach(token => {
+      fetch ('https://exp.host/--/api/v2/push/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: `{ 
+          "to": "${token}", 
+          "title": "${name} has checked in!", 
+          "body": "${comment}" 
+        }`
+      })
+    })
+  }
+
   return (
     // <ScrollView showsVerticalScrollIndicator={false}>
       <SafeAreaView style={styles.root}>
+
+        <CustomButton onPress={debugSendNotification} text={"debugSendNotification"} />
+
         <Text style={styles.title}>Please fill out the form below</Text>
         <CustomInput 
           placeholder='Enter your name' 
