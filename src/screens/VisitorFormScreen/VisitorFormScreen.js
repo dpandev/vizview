@@ -77,7 +77,7 @@ const VisitorForm = ({ navigation }) => {
   }
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}} style={styles.container}>
+    // <ScrollView showsVerticalScrollIndicator={false}>
       <SafeAreaView style={styles.root}>
         <Text style={styles.title}>Please fill out the form below</Text>
         <CustomInput 
@@ -117,19 +117,15 @@ const VisitorForm = ({ navigation }) => {
         />
         <StatusBar style="auto" />
       </SafeAreaView>
-    </ScrollView>
+    // </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    alignContent: 'center',
-  },
   root: {
     flex: 1,
     padding: 20,
     justifyContent: 'center',
-    alignItems: 'center',
   },
   title: {
     fontSize: 24,
@@ -144,7 +140,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 16,
     fontWeight: 'bold',
-    maxWidth: 400,
   },
 })
 

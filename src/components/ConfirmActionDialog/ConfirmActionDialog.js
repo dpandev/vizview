@@ -19,7 +19,7 @@ const ConfirmActionDialog = ({
 }) => {
 
   return (
-    <Dialog visible={visible} onDismiss={() => onDismiss()} style={styles.container}>
+    <Dialog visible={visible} onDismiss={() => onDismiss()}>
       <Dialog.Title>⚠️ {title}</Dialog.Title>
       <Dialog.Content>
         <Paragraph>{message}</Paragraph>
@@ -52,11 +52,6 @@ const ConfirmActionDialog = ({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    maxWidth: 500,
-    width: '90%',
-    alignSelf: 'center',
-  },
   textInput: {
     marginVertical: 10,
   },

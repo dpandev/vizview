@@ -52,7 +52,7 @@ const AppleLoginButton = () => {
           buttonType={AppleAuthenticationButtonType.SIGN_IN}
           buttonStyle={AppleAuthenticationButtonStyle.WHITE}
           cornerRadius={5}
-          style={{ width: '100%', height: 44, maxWidth: 400, }}
+          style={{ width: '100%', height: 44 }}
           onPress={loginWithApple}
         />
       ) : null}
