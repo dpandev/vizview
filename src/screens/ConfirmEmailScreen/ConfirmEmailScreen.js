@@ -54,7 +54,7 @@ const ConfirmEmailScreen = ({ navigation }) => {
   }
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1}}>
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
       <SafeAreaView style={styles.root}>
         <Text style={styles.title}>Confirm your email</Text>
 
@@ -101,6 +101,7 @@ const ConfirmEmailScreen = ({ navigation }) => {
           onDismiss={setErrorMessage}
         />
         
+        <StatusBar style="auto" />
       </SafeAreaView>
     </ScrollView>
   )
@@ -110,6 +111,7 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     padding: 20,
   },
   title: {

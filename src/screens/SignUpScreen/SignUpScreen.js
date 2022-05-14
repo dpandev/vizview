@@ -3,15 +3,13 @@ import {
   Text, 
   StyleSheet,  
   ScrollView,
-  ActivityIndicator
 } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Modal } from 'react-native-paper'
 import React, { useState } from 'react'
 import CustomInput from '../../components/CustomInput'
-import CustomButton from '../../components/CustomButton/CustomButton'
-import SocialLoginButtons from '../../components/SocialLoginButtons'
+import CustomButton from '../../components/CustomButton'
 import { auth, db } from '../../../firebase'
 import PrivacyPolicy from '../../components/PrivacyPolicy'
 import TermsOfService from '../../components/TermsOfService'
@@ -27,10 +25,8 @@ const SignUpScreen = ({ navigation }) => {
   const [showTerms, setShowTerms] = useState(false)
 
   const [errorMessage, setErrorMessage] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
 
   const onRegisterPressed = () => {
-    setIsLoading(true)
     auth
       .createUserWithEmailAndPassword(email, password)
       .then(userCredentials => {
@@ -56,7 +52,6 @@ const SignUpScreen = ({ navigation }) => {
       .catch(error => { 
         setErrorMessage(error.message)
       })
-    setIsLoading(false)
   }
 
   const onTosPressed = () => {
@@ -80,7 +75,7 @@ const SignUpScreen = ({ navigation }) => {
   }
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1}}>
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
       <SafeAreaView style={styles.root}>
         <Text style={styles.title}>Create an account</Text>
         <CustomInput 
@@ -114,8 +109,6 @@ const SignUpScreen = ({ navigation }) => {
           <Text style={styles.link} onPress={onPrivacyPressed}>Privacy Policy</Text>.
         </Text>
 
-        <SocialLoginButtons />
-
         <CustomButton
           onPress={onSignInPressed} 
           text={"Have an account? Sign in"} 
@@ -137,12 +130,6 @@ const SignUpScreen = ({ navigation }) => {
         <Modal visible={showPrivacy} onDismiss={dismissPrivacy} contentContainerStyle={styles.modalContent}>
           <PrivacyPolicy />
         </Modal>
-
-        {isLoading &&
-          <View style={styles.loadingCircle}>
-            <ActivityIndicator size="large" color="tomato" />
-          </View>
-        }
         
         <StatusBar style="auto" />
       </SafeAreaView>
@@ -154,6 +141,7 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     padding: 20,
   },
   title: {
@@ -164,6 +152,8 @@ const styles = StyleSheet.create({
   text: {
     color: 'grey',
     marginVertical: 10,
+    maxWidth: 325,
+    textAlign: 'center'
   },
   link: {
     color: 'tomato',
@@ -174,15 +164,6 @@ const styles = StyleSheet.create({
     width: '75%',
     height: '75%',
     alignSelf: 'center',
-  },
-  loadingCircle: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 })
 

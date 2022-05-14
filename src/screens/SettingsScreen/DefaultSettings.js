@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { StyleSheet, View, ScrollView } from 'react-native'
+import { StyleSheet, View, ScrollView, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Text } from 'react-native-paper'
 import ToggleSwitch from '../../components/ToggleSwitch'
@@ -21,6 +21,8 @@ const DefaultSettings = ({ navigation }) => {
   const [confirmActionInput2, setConfirmActionInput2] = useState('')
   const [confirmActionPlaceholder, setConfirmActionPlaceholder] = useState(null)
   const [confirmActionPlaceholder2, setConfirmActionPlaceholder2] = useState(null)
+  const [confirmActionSecure, setConfirmActionSecure] = useState(false)
+  const [confirmActionSecure2, setConfirmActionSecure2] = useState(false)
   const [confirmAction, setConfirmAction] = useState(() => () => {})
   
   const settings = {
@@ -45,6 +47,8 @@ const DefaultSettings = ({ navigation }) => {
     setConfirmActionTitle(null)
     setConfirmActionInput('')
     setConfirmActionInput2('')
+    setConfirmActionSecure(false)
+    setConfirmActionSecure2(false)
     setConfirmAction(() => () => {})
   }
 
@@ -62,13 +66,23 @@ const DefaultSettings = ({ navigation }) => {
     setErrorMessage(errorMsg)
   }
 
-  const setActionDialogComponent = (func, placeholder1, title, message, placeholder2) => {
-    setConfirmBoxToEmpty()
-    setConfirmAction(() => func)
-    setConfirmActionTitle(title)
-    setConfirmActionPlaceholder(placeholder1)
-    placeholder2 && setConfirmActionPlaceholder2(placeholder2)
-    setConfirmActionDialog(message)
+  const setActionDialogComponent = (
+    func, 
+    placeholder1, 
+    secure1, 
+    title, 
+    message, 
+    placeholder2, 
+    secure2
+    ) => {
+      setConfirmBoxToEmpty()
+      setConfirmAction(() => func)
+      setConfirmActionTitle(title)
+      setConfirmActionPlaceholder(placeholder1)
+      placeholder2 && setConfirmActionPlaceholder2(placeholder2)
+      setConfirmActionSecure(secure1)
+      setConfirmActionSecure2(secure2)
+      setConfirmActionDialog(message)
   }
 
   const updateUsername = (input) => {
@@ -92,41 +106,17 @@ const DefaultSettings = ({ navigation }) => {
     setActionDialogComponent(
       updateUsername,
       'username',
+      false,
       'Update Username',
       'Enter your new username below.'
     )
   }
 
   const getUserCreds = (currentPassword) => {
-    // const signInProvider = user.providerData.providerID
     let credentials = emailProvider.credential(
       user.email,
       currentPassword
     )
-    // console.log(signInProvider)  //for other auth providers
-    // switch (signInProvider) {
-    //   case 'password':
-    //     credentials = emailProvider.credential(
-    //       user.email,
-    //       currentPassword
-    //     )
-    //     break
-    //   case 'phone':
-    //     //
-    //     break
-    //   case 'google.com':
-    //     //
-    //     break
-    //   case 'facebook.com':
-    //     //
-    //     break
-    //   case 'apple.com':
-    //     //
-    //     break
-    //   default:
-    //     //
-    //     break
-    // }
     return credentials
   }
 
@@ -135,8 +125,7 @@ const DefaultSettings = ({ navigation }) => {
       .reauthenticateWithCredential(getUserCreds(password))
   }
 
-  const updatePassword = (input1, input2) => {  //TODO: check for providerData and then choose approriate provider re-auth method
-    //currently just using email provider
+  const updatePassword = (input1, input2) => {
     reAuthUser(input1)
       .then(() => {
         if (input1 === input2) {
@@ -180,9 +169,11 @@ const DefaultSettings = ({ navigation }) => {
     setActionDialogComponent(
       updatePassword,
       'current password',
+      true,
       'Update Password',
       'Enter your current and new passwords.',
-      'new password'
+      'new password',
+      true,
     )
   }
 
@@ -211,6 +202,7 @@ const DefaultSettings = ({ navigation }) => {
     setActionDialogComponent(
       deleteAccount,
       'password',
+      true,
       'Are you sure?',
       'Please enter your current password to confirm your account deletion.',
     )
@@ -237,9 +229,11 @@ const DefaultSettings = ({ navigation }) => {
     setActionDialogComponent(
       updateEmailAddress,
       'password',
+      true,
       'Update Email Address',
       'Please enter your current password and your new email address.',
-      'email'
+      'email',
+      false,
     )
   }
 
@@ -252,7 +246,7 @@ const DefaultSettings = ({ navigation }) => {
   }
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1}}>
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1, alignItems: 'center', height: '100%'}}>
       <SafeAreaView style={styles.container}>
         <Text style={styles.title}>Settings</Text>
         <View style={styles.accountInfo}>
@@ -298,6 +292,7 @@ const DefaultSettings = ({ navigation }) => {
           placeholder1={confirmActionPlaceholder}
           inputText={confirmActionInput}
           setInputText={setConfirmActionInput}
+          secureText1={confirmActionSecure}
           placeholder2={confirmActionPlaceholder2}
           inputText2={confirmActionInput2}
           setInputText2={setConfirmActionInput2}
@@ -305,8 +300,9 @@ const DefaultSettings = ({ navigation }) => {
           onDismiss={setConfirmBoxToEmpty} 
           button2={'Confirm'}
           onButton2Press={onConfirmButtonPressed}
+          secureText2={confirmActionSecure2}
         />
-
+        <StatusBar style="auto" />
       </SafeAreaView>
     </ScrollView>
   )
@@ -316,7 +312,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     padding: 20,
+    width: '100%',
+    maxHeight: '100%'
   },
   accountInfo: {
     flexDirection: 'row',
@@ -327,6 +326,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginVertical: 15,
+    maxWidth: 400,
   },
   optionTextValue: {
     flex: 1,
