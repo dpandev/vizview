@@ -1,7 +1,6 @@
 import { 
   StyleSheet,  
-  ScrollView,
-  Platform
+  ScrollView
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar'
@@ -12,7 +11,6 @@ import Logo from '../../components/Logo'
 import SocialLoginButtons from '../../components/SocialLoginButtons'
 import {auth} from '../../../firebase'
 import ErrorMessage from '../../components/ErrorMessage'
-import AppleLoginButton from '../../components/SocialLoginButtons/AppleLoginButton'
 
 const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState('')
@@ -55,7 +53,6 @@ const SignInScreen = ({ navigation }) => {
         <CustomButton onPress={onSignInPressed} text={"Sign In"} />
         <CustomButton onPress={onForgotPasswordPressed} text={"Forgot Password?"} type='TERTIARY' />
 
-        {Platform.OS === 'ios' ? <AppleLoginButton /> : null}
         <SocialLoginButtons />
 
         <CustomButton
