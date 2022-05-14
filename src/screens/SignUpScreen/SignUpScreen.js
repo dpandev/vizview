@@ -8,7 +8,7 @@ import {
 import { StatusBar } from 'expo-status-bar'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Modal } from 'react-native-paper'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton/CustomButton'
 import SocialLoginButtons from '../../components/SocialLoginButtons'
@@ -27,7 +27,6 @@ const SignUpScreen = ({ navigation }) => {
   const [showTerms, setShowTerms] = useState(false)
 
   const [errorMessage, setErrorMessage] = useState(null)
-  const [isRegistered, setIsRegistered] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
   const onRegisterPressed = () => {
@@ -44,14 +43,15 @@ const SignUpScreen = ({ navigation }) => {
             email: email,
             createdAt: new Date()
           })
-          // db.collection('users')
-          // .add({
-          //   name: username,
-          //   email: email,
-          //   createdAt: new Date()
-          // })
         }
         addToDatabase()
+      })
+      //add username to user object displayName property
+      .then(() => {
+        auth.currentUser
+          .updateProfile({
+            displayName: username
+          })
       })
       .catch(error => { 
         setErrorMessage(error.message)

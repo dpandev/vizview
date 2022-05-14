@@ -22,8 +22,6 @@ const ConfirmEmailScreen = ({ navigation }) => {
   }
 
   const onConfirmPressed = () => {
-    console.log('op begin')
-    console.log('isValid?: ', isValid())
     isValid() ? (
       auth.currentUser
         .sendEmailVerification()
@@ -43,7 +41,7 @@ const ConfirmEmailScreen = ({ navigation }) => {
   }
 
   const signOut = () => {
-    auth.signOut().then(console.log('signed out successfully'))
+    auth.signOut()
   }
 
   const onBackToSignInPressed = () => {
