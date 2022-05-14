@@ -16,8 +16,8 @@ const Logo = () => {
 const styles = StyleSheet.create({
   logo: {
     width: '70%',
-    maxWidth: 200,
-    maxHeight: 200,
+    maxWidth: '70%',
+    maxHeight: '70%',
     marginBottom: 35,
   },
 })

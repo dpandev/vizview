@@ -252,7 +252,7 @@ const DefaultSettings = ({ navigation }) => {
   }
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1}}>
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1, alignItems: 'center', height: '100%'}}>
       <SafeAreaView style={styles.container}>
         <Text style={styles.title}>Settings</Text>
         <View style={styles.accountInfo}>
@@ -316,7 +316,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     padding: 20,
+    width: '100%',
+    maxHeight: '100%',
   },
   accountInfo: {
     flexDirection: 'row',
@@ -327,6 +330,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginVertical: 15,
+    maxWidth: 400,
   },
   optionTextValue: {
     flex: 1,

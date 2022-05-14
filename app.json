@@ -18,7 +18,8 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "usesAppleSignIn": true
+      "usesAppleSignIn": true,
+      "bundleIdentifier": "com.firebaseapp.proform-barber.ios"
     },
     "android": {
       "adaptiveIcon": {

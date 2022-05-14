@@ -80,7 +80,7 @@ const SignUpScreen = ({ navigation }) => {
   }
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1}}>
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
       <SafeAreaView style={styles.root}>
         <Text style={styles.title}>Create an account</Text>
         <CustomInput 
@@ -154,6 +154,7 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     padding: 20,
   },
   title: {
