@@ -8,7 +8,6 @@ import NotificationScreen from '../screens/NotificationsScreen'
 import SettingsScreen from '../screens/SettingsScreen'
 import ConfirmEmailScreen from '../screens/ConfirmEmailScreen'
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen'
-import NewPasswordScreen from '../screens/NewPasswordScreen'
 import HomeScreen from '../screens/Home/HomeScreen'
 import PostCheckinScreen from '../screens/PostCheckinScreen'
 
@@ -21,7 +20,6 @@ const TestStack = () => {
       <TestStack.Screen name="SignUp" component={SignUpScreen} options={{ headerShown: false }} />
       <TestStack.Screen name="ConfirmEmail" component={ConfirmEmailScreen} options={{ headerShown: false }} />
       <TestStack.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{ headerShown: false }} />
-      <TestStack.Screen name="NewPassword" component={NewPasswordScreen} options={{ headerShown: false }} />
       <TestStack.Screen name="VisitorCheckinScreen" component={VisitorCheckinScreen} options={{ headerShown: false }} />
       <TestStack.Screen name="PostCheckin" component={PostCheckinScreen} options={{ headerShown: false }} />
       <TestStack.Screen name="Notification" component={NotificationScreen} />

@@ -44,13 +44,6 @@ export default function TestScreen({ navigation }) {
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
-          onPress={() => handleClick('NewPassword')}>
-            New Password
-        </Button>
-        <Button 
-          labelStyle={styles.btnContent} 
-          style={styles.button}
-          mode='text' 
           onPress={() => handleClick('VisitorForm')}>
             Visitor Form
         </Button>
