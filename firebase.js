@@ -33,7 +33,7 @@ if (firebase.apps.length === 0) {
 const auth = firebase.auth()
 const db = firebase.firestore()
 const emailProvider = firebase.auth.EmailAuthProvider
-// const appleProvider = firebase.auth.OAuthProvider('apple.com')
+const appleProvider = firebase.auth.OAuthProvider('apple.com')
 // const googleProvider = firebase.auth.GoogleAuthProvider
 
-export { auth, db, emailProvider }
+export { auth, db, emailProvider, appleProvider }
