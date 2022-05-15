@@ -1,5 +1,4 @@
 import { 
-  View,
   Text, 
   StyleSheet,  
   ScrollView,
@@ -32,23 +31,26 @@ const SignUpScreen = ({ navigation }) => {
       .then(userCredentials => {
         const user = userCredentials.user
         const addToDatabase = () => {
-          db.collection('barbers')
-          .doc(email)
-          .set({
+          db.collection('users')
+          .doc(user.uid).set({
             name: username,
             email: email,
-            createdAt: new Date()
+            createdAt: new Date(),
+            accountType: 'barber',
+          })
+          .then(() => {
+            auth.currentUser
+              .updateProfile({
+                displayName: username
+              })
           })
         }
         addToDatabase()
-      })
-      //add username to user object displayName property
-      .then(() => {
-        auth.currentUser
-          .updateProfile({
-            displayName: username
+          .catch((error) => {
+            setErrorMessage(error.message)
           })
       })
+      //add username to user object displayName property
       .catch(error => { 
         setErrorMessage(error.message)
       })

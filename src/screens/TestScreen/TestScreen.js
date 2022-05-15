@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native'
 import { Button } from 'react-native-paper'
+import { StatusBar } from 'expo-status-bar'
 
 export default function TestScreen({ navigation }) {
 
@@ -79,10 +80,11 @@ export default function TestScreen({ navigation }) {
           labelStyle={styles.btnContent} 
           style={styles.button}
           mode='text' 
-          onPress={() => handleClick('Settings')}>
-            Settings Screen
+          onPress={() => handleClick('ManageBarbers')}>
+            Manage Barbers
         </Button>
       </View>
+      <StatusBar style="auto" />
     </ScrollView>
   )
 }

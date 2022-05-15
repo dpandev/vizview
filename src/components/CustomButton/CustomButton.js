@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   container_TERTIARY: {},
+  container_QUADRARY: {},
   text: {
     color: 'white',
     fontWeight: 'bold',
@@ -50,6 +51,9 @@ const styles = StyleSheet.create({
   },
   text_TERTIARY: {
     color: 'grey',
+  },
+  text_QUADRARY: {
+    color: 'tomato',
   },
 })
 

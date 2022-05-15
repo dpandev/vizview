@@ -25,24 +25,24 @@ const ConfirmActionDialog = ({
       <Dialog.Title>⚠️ {title}</Dialog.Title>
       <Dialog.Content>
         <Paragraph>{message}</Paragraph>
-        <TextInput
-          secureTextEntry={secureText1}
-          placeholder={placeholder1}
-          value={inputText}
-          onChangeText={(input) => setInputText(input)}
-          style={styles.textInput}
-          placeholderTextColor="#a0a0a0"
-        />
-        {placeholder2 != null
-          ? <TextInput 
-              secureTextEntry={secureText2}
-              placeholder={placeholder2}
-              value={inputText2}
-              onChangeText={(input) => setInputText2(input)}
-              style={styles.textInput}
-              placeholderTextColor="#a0a0a0"
-            />
-          : <></>
+        {placeholder1 && <TextInput
+            secureTextEntry={secureText1}
+            placeholder={placeholder1}
+            value={inputText}
+            onChangeText={(input) => setInputText(input)}
+            style={styles.textInput}
+            placeholderTextColor="#a0a0a0"
+          />
+        }
+        {placeholder2 &&
+          <TextInput 
+            secureTextEntry={secureText2}
+            placeholder={placeholder2}
+            value={inputText2}
+            onChangeText={(input) => setInputText2(input)}
+            style={styles.textInput}
+            placeholderTextColor="#a0a0a0"
+          />
         }
       </Dialog.Content>
       <Dialog.Actions>
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 15,
     fontSize: 16,
-    color: 'red'
+    color: 'black'
   },
   button: {
     marginHorizontal: 10,
