@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { StyleSheet, View, ScrollView, RefreshControl } from 'react-native'
+import CustomButton from '../../components/CustomButton/CustomButton'
 import { Text } from 'react-native-paper'
 import { db, auth } from '../../../firebase'
 
@@ -8,8 +9,10 @@ const wait = (timeout) => {
 }
 
 const NotificationsScreen = () => {
+  /*
   const [refreshing, setRefreshing] = useState(false)
   const [guestList, setGuestList] = useState([])
+
 
   const onRefresh = useCallback(() => {
     console.log('RSM. notifications')
@@ -156,24 +159,62 @@ const NotificationsScreen = () => {
     console.log("notification clicked")
   }
 
-  return (  //TODO: logic to dynamically display notifications and details, add react-native refreshcontrol for pulldown action
-    <ScrollView 
-      refreshControl={
-        <RefreshControl 
-          refreshing={refreshing} 
-          onRefresh={onRefresh} 
-          contentContainerStyle={{flexGrow: 1}} 
-        />
-      }>
+  */
+  const [notifications, setNotifications] = useState([])
+
+  useEffect(() => {
+    loadNotifications()
+  }, [])
+
+  const debugGetNotifications = () => {
+    console.log(notifications)
+  }
+
+  const getNotifications = async () => {
+    const uid = auth.currentUser.email
+    return await db.collection('barbers').doc(uid).collection('checkins').get()
+  }
+
+  const loadNotifications = async () => {
+    await getNotifications().then((querySnapshot) => {
+      const tempNotifications = querySnapshot.docs.map((doc) => {
+        return doc.data()
+      })
+
+      tempNotifications.forEach(tn => {
+        const dateTime = new Date(tn.createdAt.seconds * 1000)
+        tn.time =  dateTime.toLocaleString('en-US', { timeStyle: 'short', hour12: true })
+        // console.log(tn)
+      })
+
+      console.log(tempNotifications)
+
+      setNotifications(tempNotifications.reverse())
+    })
+  }
+  
+
+  return (
+    // <ScrollView 
+    //   refreshControl={
+    //     <RefreshControl 
+    //       refreshing={refreshing} 
+    //       onRefresh={onRefresh} 
+    //       contentContainerStyle={{flexGrow: 1}} 
+    //     />
+    //   }>
+    <ScrollView>
       <View style={styles.container}>
+        <CustomButton onPress={debugGetNotifications} text={"debugGetNotifications"} />
         {Object.values(notifications).map((item, id) => (
-          <Text key={id} style={styles.button} onPress={handleClick}>
+          <Text key={id} style={styles.button}>
             <Text style={styles.text}>{item.name} has checked in at {item.time}</Text>
-            <Text style={item.comments != null ? styles.comments : styles.noDisplay}>
-              {item.comments != null ? "\nComments: " + item.comments : ""}
+            <Text style={item.comment != null ? styles.comments : styles.noDisplay}>
+              {item.comment !== "" ? "\nComments: " + item.comment : ""}
             </Text>
           </Text>
         ))}
+        <Text>hi</Text>
       </View>
     </ScrollView>
   )
