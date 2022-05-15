@@ -184,10 +184,7 @@ const NotificationsScreen = () => {
       tempNotifications.forEach(tn => {
         const dateTime = new Date(tn.createdAt.seconds * 1000)
         tn.time =  dateTime.toLocaleString('en-US', { timeStyle: 'short', hour12: true })
-        // console.log(tn)
       })
-
-      console.log(tempNotifications)
 
       setNotifications(tempNotifications.reverse())
     })
