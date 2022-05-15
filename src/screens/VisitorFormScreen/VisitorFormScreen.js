@@ -70,16 +70,12 @@ const VisitorForm = ({ navigation }) => {
         .catch((error) => console.log(error))
         .then(navigation.navigate('PostCheckin'))
 
-        sendNotification(barber)
+        sendNotification()
     }
   }
 
   const onBackToHomePressed = () => {
     navigation.navigate('VisitorCheckin')
-  }
-
-  const debugSendNotification = () => {
-    sendNotification()
   }
 
   const sendNotification = async () => {
@@ -106,9 +102,6 @@ const VisitorForm = ({ navigation }) => {
   return (
     // <ScrollView showsVerticalScrollIndicator={false}>
       <SafeAreaView style={styles.root}>
-
-        <CustomButton onPress={debugSendNotification} text={"debugSendNotification"} />
-
         <Text style={styles.title}>Please fill out the form below</Text>
         <CustomInput 
           placeholder='Enter your name' 

@@ -44,7 +44,7 @@ async function setDeviceToken(email) {
     }
 
     if (finalStatus !== 'granted') {
-      console.error('Failed ot get push token for push notification.')
+      console.error('Failed to  get push token for push notification.')
     }
 
     token = (await Notifications.getExpoPushTokenAsync()).data
