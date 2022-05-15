@@ -36,6 +36,7 @@ const SignUpScreen = ({ navigation }) => {
             name: username,
             email: email,
             createdAt: new Date(),
+            tokens: [],
             accountType: 'barber',
           })
           .then(() => {

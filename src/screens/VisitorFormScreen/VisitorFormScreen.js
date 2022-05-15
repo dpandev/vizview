@@ -73,6 +73,7 @@ const VisitorForm = ({ navigation }) => {
           comment: comment,
           createdAt: new Date()
         })
+        .then(sendNotification())
         .then(navigation.navigate('PostCheckin'))
         .catch((error) => {
           setErrorTitle('Server Error')
@@ -83,6 +84,31 @@ const VisitorForm = ({ navigation }) => {
 
   const onBackToHomePressed = () => {
     navigation.navigate('VisitorCheckin')
+  }
+
+  const sendNotification = async () => {
+    let tokens = await db.collection('barbers')
+      .doc(barber)
+      .get()
+      .then(doc => doc.get('tokens'))
+
+    tokens.forEach(token => {
+      fetch ('https://exp.host/--/api/v2/push/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: `{ 
+          "to": "${token}", 
+          "title": "${name} has checked in!", 
+          "body": "${comment}" 
+        }`
+      })
+      .catch((error) => {
+        setErrorTitle("Notification Error")
+        setErrorMessage("An error occurred while attempting to send a checkin notification.")
+      })
+    })
   }
 
   return (
