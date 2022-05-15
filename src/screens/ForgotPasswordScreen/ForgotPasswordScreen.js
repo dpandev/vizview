@@ -4,6 +4,7 @@ import {
   ScrollView
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { StatusBar } from 'expo-status-bar'
 import React, { useState } from 'react'
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton'
@@ -46,7 +47,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
   }
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1}}>
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
       <SafeAreaView style={styles.root}>
         <Text style={styles.title}>Reset your password</Text>
 
@@ -83,6 +84,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
           onDismiss={setErrorMessage}
         />
         
+        <StatusBar style="auto" />
       </SafeAreaView>
     </ScrollView>
   )
@@ -92,6 +94,7 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     padding: 20,
   },
   title: {

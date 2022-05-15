@@ -8,8 +8,7 @@ import React, { useState } from 'react'
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton'
 import Logo from '../../components/Logo'
-import SocialLoginButtons from '../../components/SocialLoginButtons'
-import {auth} from '../../../firebase'
+import { auth } from '../../../firebase'
 import ErrorMessage from '../../components/ErrorMessage'
 
 const SignInScreen = ({ navigation }) => {
@@ -53,8 +52,6 @@ const SignInScreen = ({ navigation }) => {
         <CustomButton onPress={onSignInPressed} text={"Sign In"} />
         <CustomButton onPress={onForgotPasswordPressed} text={"Forgot Password?"} type='TERTIARY' />
 
-        <SocialLoginButtons />
-
         <CustomButton
           onPress={onSignupPressed}
           text={"Don't have an account? Create one"}
@@ -77,13 +74,8 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     padding: 20,
-  },
-  logo: {
-    width: '70%',
-    maxWidth: 200,
-    maxHeight: 200,
-    marginBottom: 35,
   },
 })
 

@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useContext } from 'react'
+import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, View, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Text } from 'react-native-paper'
-import ToggleSwitch from '../../components/ToggleSwitch'
+// import ToggleSwitch from '../../components/ToggleSwitch'
 import CustomButton from '../../components/CustomButton'
 import ErrorMessage from '../../components/ErrorMessage'
 import ConfirmActionDialog from '../../components/ConfirmActionDialog'
@@ -21,54 +22,53 @@ const DefaultSettings = ({ navigation }) => {
   const [confirmActionInput2, setConfirmActionInput2] = useState('')
   const [confirmActionPlaceholder, setConfirmActionPlaceholder] = useState(null)
   const [confirmActionPlaceholder2, setConfirmActionPlaceholder2] = useState(null)
+  const [confirmActionSecure, setConfirmActionSecure] = useState(false)
+  const [confirmActionSecure2, setConfirmActionSecure2] = useState(false)
   const [confirmAction, setConfirmAction] = useState(() => () => {})
-  
-  const settings = {
-    test1: {
-      name: 'Guest Account',
-      active: true,
-    },
-    test2: {
-      name: 'Push Notifications',
-      active: false,
-    },
-    test3: {
-      name: 'Dark Mode (Future Update)',
-      active: false,
-    },
-  }
 
   const setConfirmBoxToEmpty = () => {
+    setConfirmActionDialog(null)
     setConfirmActionPlaceholder(null)
     setConfirmActionPlaceholder2(null)
-    setConfirmActionDialog(null)
     setConfirmActionTitle(null)
     setConfirmActionInput('')
     setConfirmActionInput2('')
+    setConfirmActionSecure(false)
+    setConfirmActionSecure2(false)
     setConfirmAction(() => () => {})
   }
 
   const setServerErrorMessage = (errorType, errorObj) => {
-    console.log('ServerErrorMessage: ', errorObj)
     setConfirmBoxToEmpty()
+    console.log('ServerErrorMessage: ', errorObj)
     setErrorTitle('Server Error')
-    setErrorMessage('An error has occurred while updating your ', errorType, '. Try again.')
+    setErrorMessage('An error has occurred while updating your ' + errorType + '. Try again.')
   }
 
   const setGeneralErrorMessage = (errorType, errorMsg, errorObj) => {
-    console.log('GeneralErrorMessage: ', errorObj)
     setConfirmBoxToEmpty()
+    console.log('GeneralErrorMessage: ', errorObj)
     setErrorTitle(errorType)
     setErrorMessage(errorMsg)
   }
 
-  const setActionDialogComponent = (func, placeholder1, title, message, placeholder2) => {
-    setConfirmBoxToEmpty()
-    setConfirmAction(() => func)
-    setConfirmActionTitle(title)
-    setConfirmActionPlaceholder(placeholder1)
-    placeholder2 && setConfirmActionPlaceholder2(placeholder2)
-    setConfirmActionDialog(message)
+  const setActionDialogComponent = (
+    func, 
+    placeholder1, 
+    secure1, 
+    title, 
+    message, 
+    placeholder2, 
+    secure2
+    ) => {
+      setConfirmBoxToEmpty()
+      setConfirmAction(() => func)
+      setConfirmActionTitle(title)
+      setConfirmActionPlaceholder(placeholder1)
+      placeholder2 && setConfirmActionPlaceholder2(placeholder2)
+      setConfirmActionSecure(secure1)
+      setConfirmActionSecure2(secure2)
+      setConfirmActionDialog(message)
   }
 
   const updateUsername = (input) => {
@@ -83,6 +83,14 @@ const DefaultSettings = ({ navigation }) => {
           null
         )
       })
+      .then(() => {
+        db.collection('users').doc(auth.currentUser.uid).update({
+          name: input,
+        })
+        .catch((error) => {
+          setServerErrorMessage('db username', error)
+        })
+      })
       .catch((error) => {
         setServerErrorMessage('username', error)
       })
@@ -92,41 +100,17 @@ const DefaultSettings = ({ navigation }) => {
     setActionDialogComponent(
       updateUsername,
       'username',
+      false,
       'Update Username',
       'Enter your new username below.'
     )
   }
 
   const getUserCreds = (currentPassword) => {
-    // const signInProvider = user.providerData.providerID
     let credentials = emailProvider.credential(
       user.email,
       currentPassword
     )
-    // console.log(signInProvider)  //for other auth providers
-    // switch (signInProvider) {
-    //   case 'password':
-    //     credentials = emailProvider.credential(
-    //       user.email,
-    //       currentPassword
-    //     )
-    //     break
-    //   case 'phone':
-    //     //
-    //     break
-    //   case 'google.com':
-    //     //
-    //     break
-    //   case 'facebook.com':
-    //     //
-    //     break
-    //   case 'apple.com':
-    //     //
-    //     break
-    //   default:
-    //     //
-    //     break
-    // }
     return credentials
   }
 
@@ -135,8 +119,7 @@ const DefaultSettings = ({ navigation }) => {
       .reauthenticateWithCredential(getUserCreds(password))
   }
 
-  const updatePassword = (input1, input2) => {  //TODO: check for providerData and then choose approriate provider re-auth method
-    //currently just using email provider
+  const updatePassword = (input1, input2) => {
     reAuthUser(input1)
       .then(() => {
         if (input1 === input2) {
@@ -180,15 +163,24 @@ const DefaultSettings = ({ navigation }) => {
     setActionDialogComponent(
       updatePassword,
       'current password',
+      true,
       'Update Password',
       'Enter your current and new passwords.',
-      'new password'
+      'new password',
+      true,
     )
   }
 
   const deleteAccount = (input) => {
     reAuthUser(input)
       .then(() => {
+        //set associated db collection account type
+        db.collection('users').doc(user.uid).update({
+          accountType: 'deleted'
+        })
+        .catch((error) => {
+          setServerErrorMessage('account data', error)
+        })
         //delete account
         auth.currentUser.delete()
           .then(() => {
@@ -211,6 +203,7 @@ const DefaultSettings = ({ navigation }) => {
     setActionDialogComponent(
       deleteAccount,
       'password',
+      true,
       'Are you sure?',
       'Please enter your current password to confirm your account deletion.',
     )
@@ -231,15 +224,20 @@ const DefaultSettings = ({ navigation }) => {
             setServerErrorMessage('email', error)
           })
       })
+      .catch((error) => {
+        setServerErrorMessage('email', error)
+      })
   }
 
   const onEditEmailAddress = () => {
     setActionDialogComponent(
       updateEmailAddress,
       'password',
+      true,
       'Update Email Address',
       'Please enter your current password and your new email address.',
-      'email'
+      'email',
+      false,
     )
   }
 
@@ -252,7 +250,7 @@ const DefaultSettings = ({ navigation }) => {
   }
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1}}>
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1, alignItems: 'center'}}>
       <SafeAreaView style={styles.container}>
         <Text style={styles.title}>Settings</Text>
         <View style={styles.accountInfo}>
@@ -267,15 +265,6 @@ const DefaultSettings = ({ navigation }) => {
             <Text style={styles.textRight}>{user.displayName}</Text>
           </Text>
         </View>
-        
-        {Object.values(settings).map((setting, index) => ( 
-          //need to pass setting active state to toggle and send state back to here from toggle,or just update here seperately
-          <View style={styles.option} key={index}>
-            <Text style={styles.optionTextValue}>{setting.name}</Text>
-            <Text styles={styles.optionTextValue}>{setting.active ? 'Enabled' : 'Disabled'}</Text>
-            <ToggleSwitch activeState={setting.active} />
-          </View>
-        ))}
 
         <CustomButton onPress={onEditUsername} text='Edit Username' type='SECONDARY' />
         <CustomButton onPress={onEditEmailAddress} text='Change Email Address' type='SECONDARY' />
@@ -298,6 +287,7 @@ const DefaultSettings = ({ navigation }) => {
           placeholder1={confirmActionPlaceholder}
           inputText={confirmActionInput}
           setInputText={setConfirmActionInput}
+          secureText1={confirmActionSecure}
           placeholder2={confirmActionPlaceholder2}
           inputText2={confirmActionInput2}
           setInputText2={setConfirmActionInput2}
@@ -305,8 +295,9 @@ const DefaultSettings = ({ navigation }) => {
           onDismiss={setConfirmBoxToEmpty} 
           button2={'Confirm'}
           onButton2Press={onConfirmButtonPressed}
+          secureText2={confirmActionSecure2}
         />
-
+        <StatusBar style="auto" />
       </SafeAreaView>
     </ScrollView>
   )
@@ -316,7 +307,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     padding: 20,
+    width: '100%',
+    maxHeight: '100%',
   },
   accountInfo: {
     flexDirection: 'row',
@@ -327,6 +321,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginVertical: 15,
+    maxWidth: 400,
   },
   optionTextValue: {
     flex: 1,

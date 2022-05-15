@@ -1,4 +1,4 @@
-import { Text, StyleSheet } from 'react-native'
+import { Text, StyleSheet, StatusBar } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import CustomButton from '../../components/CustomButton/CustomButton'
@@ -15,6 +15,7 @@ const PostCheckinScreen = ({ navigation }) => {
       <Text style={styles.subheading}>{"Your barber will be with you in a moment."}</Text>
 
       <CustomButton onPress={onBackToCheckin} text='Back to check in' />
+      <StatusBar style="auto" />
     </SafeAreaView>
   )
 }
@@ -24,6 +25,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     justifyContent: 'center',
+    alignItems: 'center',
   },
   heading: {
     fontSize: 24,
