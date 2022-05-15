@@ -4,6 +4,7 @@ import {
   ScrollView
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { StatusBar } from 'expo-status-bar'
 import React, { useState } from 'react'
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton'
@@ -13,16 +14,32 @@ import { auth } from '../../../firebase'
 const ForgotPasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
+  const [isLinkSent, setIsLinkSent] = useState(false)
+  const [isDisabled, setIsDisabled] = useState(false)
+
+  const timeout = (delay) => {
+    return new Promise(res => {
+      setIsDisabled(true)
+      setTimeout(res, delay)
+    })
+  }
 
   const onSendPressed = () => {
-    auth
-      .sendPasswordResetEmail(email)
-      .then(() => {
-        setErrorMessage('Password reset email has been sent!')
-      })
-      .catch((error) => {
-        setErrorMessage('There was a problem sending the request. Please try again.')
-      })
+    console.log(isDisabled)
+    if (isDisabled) {
+      setErrorMessage('Please wait at least 3 minutes before sending another request.')
+    } else {
+      auth
+        .sendPasswordResetEmail(email)
+        .then(() => {
+          setErrorMessage('Password reset email has been sent!')
+          setIsLinkSent(true)
+          timeout(180).then(setIsDisabled(false))
+        })
+        .catch((error) => {
+          setErrorMessage(error.message)
+        })
+    }
   }
 
   const onSignInPressed = () => {
@@ -30,7 +47,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
   }
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1}}>
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
       <SafeAreaView style={styles.root}>
         <Text style={styles.title}>Reset your password</Text>
 
@@ -40,7 +57,18 @@ const ForgotPasswordScreen = ({ navigation }) => {
           setValue={setEmail} 
         />
 
-        <CustomButton onPress={onSendPressed} text={"Send"} />
+        {isLinkSent ? (
+          <CustomButton
+            onPress={onSendPressed} 
+            text={"Resend Password Reset Link"} 
+            type="SECONDARY"
+          />
+        ) : (
+          <CustomButton 
+            onPress={onSendPressed} 
+            text={"Send Password Reset Link"} 
+          />
+        )}
 
         <CustomButton
           onPress={onSignInPressed} 
@@ -56,6 +84,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
           onDismiss={setErrorMessage}
         />
         
+        <StatusBar style="auto" />
       </SafeAreaView>
     </ScrollView>
   )
@@ -65,6 +94,7 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     padding: 20,
   },
   title: {

@@ -17,19 +17,23 @@ const VisitorForm = ({ navigation }) => {
   const [name, setName] = useState('')
   const [barber, setBarber] = useState('')
   const [comment, setComment] = useState('')
+  const [errorTitle, setErrorTitle] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
+
+  const barberCollection = db.collection('users').where("accountType", "==", "barber")
 
   useEffect(() => {
     let mounted = true
+    console.log('visitor mounted')
     const getBarbers = async () => {
       let list = []
-      await db.collection('barbers')
-        .get()
+      await barberCollection
+        .where("accountType", "==", "barber").get()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
             list.push({
               ...doc.data(),
-              id: doc.id
+              uid: doc.id
             })
           })
         })
@@ -41,6 +45,7 @@ const VisitorForm = ({ navigation }) => {
     }
     getBarbers()
     return function cleanUp() {
+      console.log('visitor unmounted')
       mounted = false
     }
   }, [])
@@ -58,19 +63,22 @@ const VisitorForm = ({ navigation }) => {
 
   const onCheckinPressed = () => {
     if (!validate()) {
+      setErrorTitle('Incomplete Form')
       setErrorMessage('Please make sure you enter your name and select a barber from the list.')
     } else {
-      db.collection('barbers').doc(barber)
+      barberCollection.doc(barber)
         .collection('checkins')
         .add({
           name: name,
           comment: comment,
           createdAt: new Date()
         })
-        .catch((error) => console.log(error))
+        .then(sendNotification())
         .then(navigation.navigate('PostCheckin'))
-
-        sendNotification()
+        .catch((error) => {
+          setErrorTitle('Server Error')
+          setErrorMessage("An error occurred while checking in.")
+        })
     }
   }
 
@@ -96,11 +104,15 @@ const VisitorForm = ({ navigation }) => {
           "body": "${comment}" 
         }`
       })
+      .catch((error) => {
+        setErrorTitle("Notification Error")
+        setErrorMessage("An error occurred while attempting to send a checkin notification.")
+      })
     })
   }
 
   return (
-    // <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}} style={styles.container}>
       <SafeAreaView style={styles.root}>
         <Text style={styles.title}>Please fill out the form below</Text>
         <CustomInput 
@@ -133,22 +145,26 @@ const VisitorForm = ({ navigation }) => {
   
         <ErrorMessage 
           visible={errorMessage != null} 
-          title={"Incomplete Form"}
+          title={errorTitle}
           message={errorMessage} 
           button={"Close"}
           onDismiss={setErrorMessage} 
         />
         <StatusBar style="auto" />
       </SafeAreaView>
-    // </ScrollView>
+    </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
+  container: {
+    alignContent: 'center',
+  },
   root: {
     flex: 1,
     padding: 20,
     justifyContent: 'center',
+    alignItems: 'center',
   },
   title: {
     fontSize: 24,
@@ -163,6 +179,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 16,
     fontWeight: 'bold',
+    maxWidth: 400,
   },
 })
 

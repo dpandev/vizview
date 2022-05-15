@@ -3,19 +3,31 @@ import { NavigationContainer } from '@react-navigation/native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import TabNavigation from './TabNavigation'
 import AuthStack from './AuthStack'
-import { auth } from '../../firebase'
+import { auth, db } from '../../firebase'
 import { AuthenticatedUserContext } from './AuthenticatedUserProvider'
 import { View, ActivityIndicator } from 'react-native'
 
 const Stack = createNativeStackNavigator()
 
 const Navigation = () => {
-  const { user, setUser, isVerified, setIsVerified } = useContext(AuthenticatedUserContext)
+  const { user, setUser, isVerified, setIsVerified, account, setAccount } = useContext(AuthenticatedUserContext)
   const [isLoading, setIsLoading] = useState(true)
+
+  const getAccountType = async (user) => {
+    let data = await 
+      db.collection('users').doc(user).get()
+        .then((doc) => {
+          let type = doc.data().accountType
+          setAccount(type)
+        })
+        .catch((error) => console.log(error.message))
+    return data
+  }
 
   const handleUser = (user) => {
     if (user) {
       setUser(user)
+      getAccountType(user.uid)
       if (auth.currentUser.emailVerified) {
         setIsVerified(true)
       } else {
@@ -23,6 +35,7 @@ const Navigation = () => {
       }
     } else {
       setUser(null)
+      setAccount(null)
     }
     setIsLoading(false)
   }

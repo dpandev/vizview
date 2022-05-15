@@ -1,91 +1,99 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
+import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, View, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Text } from 'react-native-paper'
-import ToggleSwitch from '../../components/ToggleSwitch'
 import CustomButton from '../../components/CustomButton'
-import { auth, db } from '../../../firebase'
+import ErrorMessage from '../../components/ErrorMessage'
+import ConfirmActionDialog from '../../components/ConfirmActionDialog'
+import { auth, db, emailProvider } from '../../../firebase'
+import { AuthenticatedUserContext } from '../../Navigation/AuthenticatedUserProvider'
 
-const AdminSettings = ({ navigation }) => { //copy of DefaultSettings rn, will need to change
-  const [userInfo, setUserInfo] = useState([])
-  
-  const settings = {
-    test1: {
-      name: 'Guest Account',
-      active: true,
-    },
-    test2: {
-      name: 'Push Notifications',
-      active: false,
-    },
-    test3: {
-      name: 'Dark Mode',
-      active: false,
-    },
-  }
+const AdminSettings = ({ navigation }) => {
+  const { user } = useContext(AuthenticatedUserContext) //pass in as prop from tabnav?
 
-  useEffect(() => {
-    const unsubscribe = getUserData()
-    return unsubscribe
-  }, [])
+  const [errorTitle, setErrorTitle] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
 
-  const getUserData = () => {
+  const [confirmActionTitle, setConfirmActionTitle] = useState(null)
+  const [confirmActionDialog, setConfirmActionDialog] = useState(null)
+  const [confirmActionInput, setConfirmActionInput] = useState('')
+  const [confirmActionInput2, setConfirmActionInput2] = useState('')
+  const [confirmActionPlaceholder, setConfirmActionPlaceholder] = useState(null)
+  const [confirmActionPlaceholder2, setConfirmActionPlaceholder2] = useState(null)
+  const [confirmActionSecure, setConfirmActionSecure] = useState(false)
+  const [confirmActionSecure2, setConfirmActionSecure2] = useState(false)
+  const [confirmAction, setConfirmAction] = useState(() => () => {})
+
+  const getUserData = () => {//TODO finish
     let data = []
-    const task = db.collection('barbers').where('email', '==', auth.currentUser.email).get().then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        data.push({
-          ...doc.data(),
+    const task = db.collection('barbers').where('email', '==', auth.currentUser.email)//TODO change to 'users'
+      .get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          data.push({
+            ...doc.data(),
+        })
+          setUserInfo(data[0])
+        })
+      }).catch((error) => {
+        console.log('Error: ', error)
       })
-        setUserInfo(data[0])
-      })
-    }).catch((error) => {
-      console.log('Error: ', error)
-    })
     return task
   }
 
-  const onSignOutPressed = () => {
-    auth.signOut()
+  const setConfirmBoxToEmpty = () => {
+    setConfirmActionDialog(null)
+    setConfirmActionPlaceholder(null)
+    setConfirmActionPlaceholder2(null)
+    setConfirmActionTitle(null)
+    setConfirmActionInput('')
+    setConfirmActionInput2('')
+    setConfirmActionSecure(false)
+    setConfirmActionSecure2(false)
+    setConfirmAction(() => () => {})
   }
 
-  const onDeleteAccount = () => {
-    console.warn('Delete Account')
+  const onConfirmButtonPressed = () => {
+    confirmAction(confirmActionInput, confirmActionInput2)
   }
 
-  const onEditUsername = () => {
-    console.warn('Edit Username')
+  const onManageBarbers = () => {
+    navigation.navigate('ManageBarbers')
   }
 
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1, alignItems: 'center'}}>
       <SafeAreaView style={styles.container}>
-        <Text style={styles.title}>Settings</Text>
-        <View style={styles.accountInfo}>
-          <Text>
-            <Text style={styles.textLeft}>{'Logged in as:'}</Text>{' '}
-            <Text style={styles.textRight}>{auth.currentUser?.email}</Text>
-          </Text>
-        </View>
-        <View style={styles.accountInfo}>
-          <Text>
-            <Text style={styles.textLeft}>{'Username:'}</Text>{' '}
-            <Text style={styles.textRight}>{userInfo.name}</Text>
-          </Text>
-        </View>
-        
 
-        {Object.values(settings).map((setting, index) => ( 
-          //need to pass setting active state to toggle and send state back to here from toggle,or just update here seperately
-          <View style={styles.option} key={index}>
-            <Text style={styles.optionTextValue}>{setting.name}</Text>
-            <Text styles={styles.optionTextValue}>{setting.active ? 'Enabled' : 'Disabled'}</Text>
-            <ToggleSwitch activeState={setting.active} />
-          </View>
-        ))}
+        <CustomButton onPress={onManageBarbers} text='Manage Barbers' type='SECONDARY' />
+        <CustomButton onPress={onManageBarbers} text='Sign out' />
 
-        <CustomButton onPress={onEditUsername} text='Edit Username' type='SECONDARY' />
-        <CustomButton onPress={onDeleteAccount} text='Delete Account' type='SECONDARY' />
-        <CustomButton onPress={onSignOutPressed} text='Sign out' />
+        <ErrorMessage 
+          visible={errorMessage != null} 
+          title={errorTitle}
+          message={errorMessage} 
+          button={"Close"}
+          onDismiss={setErrorMessage} 
+        />
+
+        <ConfirmActionDialog
+          visible={confirmActionDialog != null} 
+          title={confirmActionTitle}
+          message={confirmActionDialog} 
+          placeholder1={confirmActionPlaceholder}
+          inputText={confirmActionInput}
+          setInputText={setConfirmActionInput}
+          secureText1={confirmActionSecure}
+          placeholder2={confirmActionPlaceholder2}
+          inputText2={confirmActionInput2}
+          setInputText2={setConfirmActionInput2}
+          button={"Cancel"}
+          onDismiss={setConfirmBoxToEmpty} 
+          button2={'Confirm'}
+          onButton2Press={onConfirmButtonPressed}
+          secureText2={confirmActionSecure2}
+        />
+        <StatusBar style="auto" />
       </SafeAreaView>
     </ScrollView>
   )
@@ -95,7 +103,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     padding: 20,
+    width: '100%',
+    maxHeight: '100%',
   },
   accountInfo: {
     flexDirection: 'row',
@@ -106,6 +117,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginVertical: 15,
+    maxWidth: 400,
   },
   optionTextValue: {
     flex: 1,

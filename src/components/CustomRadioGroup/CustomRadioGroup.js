@@ -21,7 +21,7 @@ const CustomRadioGroup = ({ value, setValue, options }) => {
       {options.map((item, id) => (
         <CustomRadioButton 
           key={id}
-          value={item.id} 
+          value={item.uid} 
           label={item.name} 
         />
       ))}
