@@ -1,21 +1,19 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { StyleSheet, View, ScrollView, RefreshControl } from 'react-native'
-import CustomButton from '../../components/CustomButton/CustomButton'
 import { Text } from 'react-native-paper'
 import { db, auth } from '../../../firebase'
-
-function delay(timeout) {
-  return new Promise(resolve => {
-    setTimeout(resolve, timeout)
-  })
-}
 
 const NotificationsScreen = () => {
   const [notifications, setNotifications] = useState([])
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+    let mounted = true
     loadNotifications()
+
+    return () => {
+      mounted = false
+    }
   }, [])
 
   const debugGetNotifications = () => {
@@ -23,8 +21,8 @@ const NotificationsScreen = () => {
   }
 
   const getNotifications = async () => {
-    const uid = auth.currentUser.email
-    return await db.collection('barbers').doc(uid).collection('checkins').get()
+    const uid = auth.currentUser.uid
+    return await db.collection('users').doc(uid).collection('checkins').get()
   }
 
   const loadNotifications = async () => {

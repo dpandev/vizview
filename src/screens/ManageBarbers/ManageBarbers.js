@@ -89,7 +89,6 @@ const ManageBarbers = () => {
   useEffect(() => {
     let mounted = true
     setIsLoading(true)
-    console.log('mounted')
     const getUserList = async () => {
       let list = []
       await dbAccounts.get()
@@ -117,7 +116,6 @@ const ManageBarbers = () => {
     }
     getUserList()
     return function cleanUp() {
-      console.log('unmounting')
       mounted = false
     }
   }, [hasChanged])

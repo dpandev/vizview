@@ -17,17 +17,22 @@ const Navigation = () => {
     let data = await 
       db.collection('users').doc(user).get()
         .then((doc) => {
+          console.log('trying to get this bread')
+          console.log(account)
           let type = doc.data().accountType
           setAccount(type)
+          console.log('how about now? ', account)
         })
-        .catch((error) => console.log(error.message))
+        .catch((error) => console.log('nav error: ', error.message))
     return data
   }
 
   const handleUser = (user) => {
     if (user) {
       setUser(user)
+      console.log('about to run')
       getAccountType(user.uid)
+      console.log('already ran')
       if (auth.currentUser.emailVerified) {
         setIsVerified(true)
       } else {

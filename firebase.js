@@ -36,7 +36,6 @@ if (firebase.apps.length === 0) {
 const auth = firebase.auth()
 const db = firebase.firestore()
 const emailProvider = firebase.auth.EmailAuthProvider
-const FieldValue = firebase.firestore.FieldValue
 
 export { auth, db, emailProvider, firebase }
 

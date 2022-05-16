@@ -32,27 +32,28 @@ Notifications.setNotificationHandler({
   })
 })
 
-async function setDeviceToken(email) {
+async function setDeviceToken(userUID) {
   let token
 
   if (Device.isDevice) {
     const {status: existingStatus} = await Notifications.getPermissionsAsync()
     let finalStatus = existingStatus
     if (existingStatus !== 'granted') {
-      const {status} = await Notifications.requestPermissionsAsync();
+      const {status} = await Notifications.requestPermissionsAsync()
       finalStatus = status
     }
 
     if (finalStatus !== 'granted') {
-      console.error('Failed to  get push token for push notification.')
+      console.error('Failed to get push token for push notification.')
+      return
     }
 
     token = (await Notifications.getExpoPushTokenAsync()).data
-  }
+    console.log(token)
 
-  db.collection('barbers').doc(email).update({
-    tokens: firebase.firestore.FieldValue.arrayUnion(token)
-  })
+  } else {
+    console.log('needs to be physical device')
+  }
 
   if (Platform.OS === 'android') {
     Notifications.setNotificationChannelAsync('default', {
@@ -60,18 +61,35 @@ async function setDeviceToken(email) {
       importance: Notifications.AndroidImportance.MAX,
       vibrationPattern: [0, 250, 250, 250],
       lightColor: '#FF231F7C',
-    });
+    })
   }
+
+  return token
 }
 
 export default function App() {
+
   useEffect(async () => {
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        setDeviceToken(user.email)
+    let mounted = true
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user && mounted) {
+        let userToken
+        setDeviceToken(user.uid).then((res) => {
+          userToken = res
+        })
+        .then(() => {
+          db.collection('users').doc(user.uid).update({
+            tokens: firebase.firestore.FieldValue.arrayUnion(userToken)
+          })
+          .then(() => console.log('great success'))
+        })
       }
     })
-  })
+    unsubscribe()
+    return () => {
+      mounted = false
+    }
+  }, [])
 
 
   return (

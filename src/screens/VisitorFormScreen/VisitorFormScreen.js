@@ -20,15 +20,14 @@ const VisitorForm = ({ navigation }) => {
   const [errorTitle, setErrorTitle] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
 
-  const barberCollection = db.collection('users').where("accountType", "==", "barber")
+  const barberCollection = db.collection('users').where('accountType', 'in', ['barber', 'admin'])
+  const dbAccounts = db.collection('users')
 
   useEffect(() => {
     let mounted = true
-    console.log('visitor mounted')
     const getBarbers = async () => {
       let list = []
-      await barberCollection
-        .where("accountType", "==", "barber").get()
+      await barberCollection.get()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
             list.push({
@@ -36,6 +35,8 @@ const VisitorForm = ({ navigation }) => {
               uid: doc.id
             })
           })
+        })
+        .catch((error) => {
         })
         .then(() => {
           if (mounted) {
@@ -45,7 +46,6 @@ const VisitorForm = ({ navigation }) => {
     }
     getBarbers()
     return function cleanUp() {
-      console.log('visitor unmounted')
       mounted = false
     }
   }, [])
@@ -66,7 +66,7 @@ const VisitorForm = ({ navigation }) => {
       setErrorTitle('Incomplete Form')
       setErrorMessage('Please make sure you enter your name and select a barber from the list.')
     } else {
-      barberCollection.doc(barber)
+      dbAccounts.doc(barber)
         .collection('checkins')
         .add({
           name: name,
@@ -87,7 +87,7 @@ const VisitorForm = ({ navigation }) => {
   }
 
   const sendNotification = async () => {
-    let tokens = await db.collection('barbers')
+    let tokens = await dbAccounts
       .doc(barber)
       .get()
       .then(doc => doc.get('tokens'))
