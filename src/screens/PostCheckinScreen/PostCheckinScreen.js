@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   subheading: {
     color: 'black',
     marginTop: 25,
-    marginBottom: 15,
+    marginBottom: 25,
     textAlign: 'center',
     fontSize: 16,
     fontWeight: 'bold',

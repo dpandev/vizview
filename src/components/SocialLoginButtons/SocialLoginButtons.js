@@ -11,12 +11,8 @@ const SocialLoginButtons = () => {
   const onSignInGoogle = () => {
     const provider = new firebase.auth.GoogleAuthProvider()
     auth
-      .signInWithPopup(provider).then((result) => {
-        let token = result.credential.accessToken
-        let user = result.user
-        console.log(token)
-        console.log(user)
-      }).catch(error => alert(error.message))
+      .signInWithPopup(provider)
+        .catch(error => alert(error.message))
   }
 
   const onSignInFacebook = () => {

@@ -6,7 +6,6 @@ import { StatusBar } from 'expo-status-bar'
 export default function TestScreen({ navigation }) {
 
   const handleClick = (value) => {
-    console.log('TestScreen: ', value)
     navigation.navigate(value)
   }
 

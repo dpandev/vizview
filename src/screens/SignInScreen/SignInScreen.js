@@ -19,9 +19,7 @@ const SignInScreen = ({ navigation }) => {
   const onSignInPressed = () => {
     auth
       .signInWithEmailAndPassword(email, password)
-      .then(userCredentials => {
-        const user = userCredentials.user
-      }).catch(error => {
+      .catch((error) => {
         setErrorMessage(error.message)
       })
   }
@@ -42,6 +40,7 @@ const SignInScreen = ({ navigation }) => {
           placeholder='Email' 
           value={email} 
           setValue={setEmail} 
+          keyboardType='email-address'
         />
         <CustomInput 
           placeholder='Password' 

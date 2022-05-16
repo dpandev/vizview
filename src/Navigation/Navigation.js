@@ -10,18 +10,22 @@ import { View, ActivityIndicator } from 'react-native'
 const Stack = createNativeStackNavigator()
 
 const Navigation = () => {
-  const { user, setUser, isVerified, setIsVerified, account, setAccount } = useContext(AuthenticatedUserContext)
+  const { 
+    user, 
+    setUser, 
+    isVerified, 
+    setIsVerified, 
+    account, 
+    setAccount,
+  } = useContext(AuthenticatedUserContext)
   const [isLoading, setIsLoading] = useState(true)
 
   const getAccountType = async (user) => {
     let data = await 
       db.collection('users').doc(user).get()
         .then((doc) => {
-          console.log('trying to get this bread')
-          console.log(account)
           let type = doc.data().accountType
           setAccount(type)
-          console.log('how about now? ', account)
         })
         .catch((error) => console.log('nav error: ', error.message))
     return data
@@ -30,9 +34,7 @@ const Navigation = () => {
   const handleUser = (user) => {
     if (user) {
       setUser(user)
-      console.log('about to run')
       getAccountType(user.uid)
-      console.log('already ran')
       if (auth.currentUser.emailVerified) {
         setIsVerified(true)
       } else {

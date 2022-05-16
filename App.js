@@ -9,7 +9,6 @@ import * as Notifications from 'expo-notifications'
 import { Platform } from 'react-native-web'
 
 LogBox.ignoreLogs(['Setting a timer'])
-LogBox.ignoreLogs(['AsyncStorage has been extracted from react-native core'])
 
 const theme = {
   ...DefaultTheme,
@@ -49,7 +48,6 @@ async function setDeviceToken(userUID) {
     }
 
     token = (await Notifications.getExpoPushTokenAsync()).data
-    console.log(token)
 
   } else {
     console.log('needs to be physical device')
@@ -69,28 +67,27 @@ async function setDeviceToken(userUID) {
 
 export default function App() {
 
-  useEffect(async () => {
-    let mounted = true
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user && mounted) {
+  const registerDevicePushTokenAsync = async () => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
         let userToken
-        setDeviceToken(user.uid).then((res) => {
-          userToken = res
-        })
-        .then(() => {
-          db.collection('users').doc(user.uid).update({
-            tokens: firebase.firestore.FieldValue.arrayUnion(userToken)
+        setDeviceToken(user.uid)
+          .then((res) => {
+            userToken = res
           })
-          .then(() => console.log('great success'))
-        })
+          .then(() => {
+            db.collection('users').doc(user.uid).update({
+              tokens: firebase.firestore.FieldValue.arrayUnion(userToken)
+            })
+          })
       }
     })
-    unsubscribe()
-    return () => {
-      mounted = false
-    }
-  }, [])
+  }
 
+  useEffect(() => {
+    const subscription = Notifications.addPushTokenListener(registerDevicePushTokenAsync)
+    return () => subscription.remove()
+  }, [])
 
   return (
     <SafeAreaProvider>

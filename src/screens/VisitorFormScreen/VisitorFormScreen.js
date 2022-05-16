@@ -5,7 +5,8 @@ import {
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
+import { useFocusEffect } from '@react-navigation/native'
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton/CustomButton'
 import CustomRadioGroup from '../../components/CustomRadioGroup'
@@ -23,32 +24,36 @@ const VisitorForm = ({ navigation }) => {
   const barberCollection = db.collection('users').where('accountType', 'in', ['barber', 'admin'])
   const dbAccounts = db.collection('users')
 
-  useEffect(() => {
-    let mounted = true
-    const getBarbers = async () => {
-      let list = []
-      await barberCollection.get()
-        .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            list.push({
-              ...doc.data(),
-              uid: doc.id
+  useFocusEffect(
+    useCallback(() => {
+      let mounted = true
+      const getBarbers = async () => {
+        let list = []
+        await barberCollection.get()
+          .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              list.push({
+                ...doc.data(),
+                uid: doc.id
+              })
             })
           })
-        })
-        .catch((error) => {
-        })
-        .then(() => {
-          if (mounted) {
-            setBarbersList(list)
-          }
-        })
-    }
-    getBarbers()
-    return function cleanUp() {
-      mounted = false
-    }
-  }, [])
+          .catch((error) => {
+            setErrorTitle('Server Error')
+            setErrorMessage('An error occurred while fetching list of barbers.')
+          })
+          .then(() => {
+            if (mounted) {
+              setBarbersList(list)
+            }
+          })
+      }
+      getBarbers()
+      return function cleanUp() {
+        mounted = false
+      }
+    }, [])
+  )
 
   const validate = () => {
     let valid = true

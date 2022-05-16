@@ -255,7 +255,7 @@ const DefaultSettings = ({ navigation }) => {
         <Text style={styles.title}>Settings</Text>
         <View style={styles.accountInfo}>
           <Text>
-            <Text style={styles.textLeft}>{'Logged in as:'}</Text>{' '}
+            <Text style={styles.textLeft}>{'Email:'}</Text>{' '}
             <Text style={styles.textRight}>{user.email}</Text>
           </Text>
         </View>
@@ -314,7 +314,7 @@ const styles = StyleSheet.create({
   },
   accountInfo: {
     flexDirection: 'row',
-    alignItems: 'center',
+    // alignItems: 'center',
   },
   option: {
     flexDirection: 'row',
@@ -335,12 +335,13 @@ const styles = StyleSheet.create({
   textLeft: {
     flex: 1,
     fontWeight: 'bold',
-    textAlign: 'right',
+    fontSize: 17,
   },
   textRight: {
     flex: 1,
     fontWeight: 'bold',
     color: 'tomato',
+    fontSize: 17,
   },
 })
 

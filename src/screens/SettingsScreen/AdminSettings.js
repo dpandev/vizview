@@ -1,16 +1,12 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, View, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Text } from 'react-native-paper'
 import CustomButton from '../../components/CustomButton'
 import ErrorMessage from '../../components/ErrorMessage'
 import ConfirmActionDialog from '../../components/ConfirmActionDialog'
-import { auth, db, emailProvider } from '../../../firebase'
-import { AuthenticatedUserContext } from '../../Navigation/AuthenticatedUserProvider'
 
 const AdminSettings = ({ navigation }) => {
-  const { user } = useContext(AuthenticatedUserContext) //pass in as prop from tabnav?
 
   const [errorTitle, setErrorTitle] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
@@ -24,22 +20,6 @@ const AdminSettings = ({ navigation }) => {
   const [confirmActionSecure, setConfirmActionSecure] = useState(false)
   const [confirmActionSecure2, setConfirmActionSecure2] = useState(false)
   const [confirmAction, setConfirmAction] = useState(() => () => {})
-
-  const getUserData = () => {//TODO finish
-    let data = []
-    const task = db.collection('barbers').where('email', '==', auth.currentUser.email)//TODO change to 'users'
-      .get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          data.push({
-            ...doc.data(),
-        })
-          setUserInfo(data[0])
-        })
-      }).catch((error) => {
-        console.log('Error: ', error)
-      })
-    return task
-  }
 
   const setConfirmBoxToEmpty = () => {
     setConfirmActionDialog(null)
@@ -66,7 +46,6 @@ const AdminSettings = ({ navigation }) => {
       <SafeAreaView style={styles.container}>
 
         <CustomButton onPress={onManageBarbers} text='Manage Barbers' type='SECONDARY' />
-        <CustomButton onPress={onManageBarbers} text='Sign out' />
 
         <ErrorMessage 
           visible={errorMessage != null} 

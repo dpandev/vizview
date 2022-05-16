@@ -19,7 +19,7 @@ const ConfirmEmailScreen = ({ navigation }) => {
   const [isLinkSent, setIsLinkSent] = useState(false)
 
   const isValid = () => {
-    return auth.currentUser.email === email
+    return auth.currentUser.email === email.trim()
   }
 
   const onConfirmPressed = () => {
@@ -50,7 +50,6 @@ const ConfirmEmailScreen = ({ navigation }) => {
   }
 
   const onResendPressed = () => {
-    //TODO: "can send again in 5 minutes..."
     onConfirmPressed()
   }
 
@@ -63,6 +62,7 @@ const ConfirmEmailScreen = ({ navigation }) => {
           placeholder='Enter your email' 
           value={email} 
           setValue={setEmail} 
+          keyboardType='email-address'
         />
 
         {isLinkSent ? (

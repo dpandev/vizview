@@ -11,7 +11,7 @@ import AdminNavigation from './AdminNavigation'
 const Tab = createBottomTabNavigator()
 
 const TabNavigation = () => {
-  const {account } = useContext(AuthenticatedUserContext)
+  const { account } = useContext(AuthenticatedUserContext)
 
   return (
     <Tab.Navigator
@@ -62,7 +62,7 @@ const TabNavigation = () => {
           options={{ headerShown: false }} 
         />
       }
-      {/* TODO remove/replace TestScreenStack for prod */}
+      {/* TODO remove/replace TestScreenStack */}
       {account === 'admin' &&
         <Tab.Screen 
           name='TestStack' 

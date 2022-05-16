@@ -51,7 +51,6 @@ const SignUpScreen = ({ navigation }) => {
             setErrorMessage(error.message)
           })
       })
-      //add username to user object displayName property
       .catch(error => { 
         setErrorMessage(error.message)
       })

@@ -24,7 +24,7 @@ const ConfirmActionDialog = ({
     <Dialog visible={visible} onDismiss={() => onDismiss()} style={styles.container}>
       <Dialog.Title>⚠️ {title}</Dialog.Title>
       <Dialog.Content>
-        <Paragraph>{message}</Paragraph>
+        <Paragraph style={styles.description}>{message}</Paragraph>
         {placeholder1 && <TextInput
             secureTextEntry={secureText1}
             placeholder={placeholder1}
@@ -60,6 +60,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 5,
   },
+  description: {
+    fontSize: 16,
+  },
   textInput: {
     backgroundColor: '#f9f9f9',
     borderColor: '#e8e8e8',
@@ -68,7 +71,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     paddingVertical: 15,
     paddingHorizontal: 15,
-    fontSize: 16,
+    fontSize: 18,
     color: 'black'
   },
   button: {

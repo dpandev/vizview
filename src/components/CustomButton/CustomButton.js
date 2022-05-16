@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     maxWidth: 400,
-    padding: 17,
+    padding: 19,
     marginVertical: 5,
     borderRadius: 5,
     alignItems: 'center',
@@ -45,12 +45,15 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     letterSpacing: 0.35,
+    fontSize: 18,
+    textAlign: 'center',
   },
   text_SECONDARY: {
     color: 'black',
   },
   text_TERTIARY: {
     color: 'grey',
+    fontSize: 17,
   },
   text_QUADRARY: {
     color: 'tomato',

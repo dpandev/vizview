@@ -25,7 +25,6 @@ const ForgotPasswordScreen = ({ navigation }) => {
   }
 
   const onSendPressed = () => {
-    console.log(isDisabled)
     if (isDisabled) {
       setErrorMessage('Please wait at least 3 minutes before sending another request.')
     } else {
