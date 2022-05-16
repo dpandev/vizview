@@ -259,7 +259,7 @@ const DefaultSettings = ({ navigation }) => {
             <Text style={styles.textRight}>{user.email}</Text>
           </Text>
         </View>
-        <View style={styles.accountInfo}>
+        <View style={[styles.accountInfo, styles.marginBottom]}>
           <Text>
             <Text style={styles.textLeft}>{'Username:'}</Text>{' '}
             <Text style={styles.textRight}>{user.displayName}</Text>
@@ -314,7 +314,9 @@ const styles = StyleSheet.create({
   },
   accountInfo: {
     flexDirection: 'row',
-    // alignItems: 'center',
+  },
+  marginBottom: {
+    marginBottom: 25,
   },
   option: {
     flexDirection: 'row',

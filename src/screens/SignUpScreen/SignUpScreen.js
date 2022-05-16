@@ -19,14 +19,19 @@ const SignUpScreen = ({ navigation }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [passwordConfirm, setPasswordConfirm] = useState('')
+  const [code, setCode] = useState('')
   
   const [showPrivacy, setShowPrivacy] = useState(false)
   const [showTerms, setShowTerms] = useState(false)
 
   const [errorMessage, setErrorMessage] = useState(null)
 
+  const authCode = db.collection('validation').doc('authorization').get()
+
   const onRegisterPressed = () => {
-    auth
+
+    if (code === authCode) {
+      auth
       .createUserWithEmailAndPassword(email, password)
       .then(userCredentials => {
         const user = userCredentials.user
@@ -54,6 +59,9 @@ const SignUpScreen = ({ navigation }) => {
       .catch(error => { 
         setErrorMessage(error.message)
       })
+    } else {
+      setErrorMessage('Authorization code is invalid.')
+    }
   }
 
   const onTosPressed = () => {
@@ -89,6 +97,7 @@ const SignUpScreen = ({ navigation }) => {
           placeholder='Email' 
           value={email} 
           setValue={setEmail}  
+          keyboardType='email-address'
         />
         <CustomInput 
           placeholder='Password' 
@@ -101,6 +110,12 @@ const SignUpScreen = ({ navigation }) => {
           value={passwordConfirm} 
           setValue={setPasswordConfirm} 
           secureTextEntry
+        />
+        <CustomInput 
+          placeholder='Authorization Code' 
+          value={code} 
+          setValue={setCode} 
+          keyboardType='numeric'
         />
 
         <CustomButton onPress={onRegisterPressed} text={"Register"} />

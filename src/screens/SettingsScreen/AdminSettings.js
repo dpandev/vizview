@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import CustomButton from '../../components/CustomButton'
 import ErrorMessage from '../../components/ErrorMessage'
 import ConfirmActionDialog from '../../components/ConfirmActionDialog'
+import { db } from '../../../firebase'
 
 const AdminSettings = ({ navigation }) => {
 
@@ -33,6 +34,39 @@ const AdminSettings = ({ navigation }) => {
     setConfirmAction(() => () => {})
   }
 
+  const setActionDialogComponent = (
+    func, 
+    placeholder1, 
+    secure1, 
+    title, 
+    message, 
+    placeholder2, 
+    secure2
+    ) => {
+      setConfirmBoxToEmpty()
+      setConfirmAction(() => func)
+      setConfirmActionTitle(title)
+      setConfirmActionPlaceholder(placeholder1)
+      placeholder2 && setConfirmActionPlaceholder2(placeholder2)
+      setConfirmActionSecure(secure1)
+      setConfirmActionSecure2(secure2)
+      setConfirmActionDialog(message)
+  }
+
+  const setServerErrorMessage = (errorType, errorObj) => {
+    setConfirmBoxToEmpty()
+    console.log('ServerErrorMessage: ', errorObj)
+    setErrorTitle('Server Error')
+    setErrorMessage('An error has occurred while updating your ' + errorType + '. Try again.')
+  }
+
+  const setGeneralErrorMessage = (errorType, errorMsg, errorObj) => {
+    setConfirmBoxToEmpty()
+    console.log('GeneralErrorMessage: ', errorObj)
+    setErrorTitle(errorType)
+    setErrorMessage(errorMsg)
+  }
+
   const onConfirmButtonPressed = () => {
     confirmAction(confirmActionInput, confirmActionInput2)
   }
@@ -41,11 +75,69 @@ const AdminSettings = ({ navigation }) => {
     navigation.navigate('ManageBarbers')
   }
 
+  const updateAuthCode = async (oldCode, newCode) => {
+    if (oldCode === '' || newCode === '') {
+      setGeneralErrorMessage(
+        'Validation Error',
+        'Input cannot be empty.',
+        null
+      )
+    } else {
+      const dbCode = db.collection('validation').doc('authorization')
+        await dbCode.get()
+          .then((doc) => {
+            if (doc.data().code === oldCode) {
+              dbCode.update({
+                code: newCode
+              })
+              .then(() => {
+                setGeneralErrorMessage(
+                  'Success',
+                  'Authorization code was updated successfully!',
+                  null
+                )
+              })
+              .catch((error) => {
+                setServerErrorMessage(
+                  'authorization code',
+                  error
+                )
+              })
+            } else {
+              setGeneralErrorMessage(
+                'Authorization Code',
+                'Old authorization code is invalid.',
+                null
+              )
+            }
+          })
+          .catch((error) => {
+            setServerErrorMessage(
+              'auth code',
+              error
+            )
+          })
+        }
+  }
+
+  const onChangeCode = async () => {
+    setActionDialogComponent(
+      updateAuthCode,
+      'old authorization code',
+      false,
+      'Change Authorization Code',
+      'Enter your old and new authorization codes below',
+      'new authorization code',
+      false
+    )
+  }
+
   return (
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1, alignItems: 'center'}}>
       <SafeAreaView style={styles.container}>
 
         <CustomButton onPress={onManageBarbers} text='Manage Barbers' type='SECONDARY' />
+        <CustomButton onPress={onChangeCode} text='Change Authorization Code' type='SECONDARY' />
 
         <ErrorMessage 
           visible={errorMessage != null} 
