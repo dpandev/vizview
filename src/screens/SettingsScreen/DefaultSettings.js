@@ -1,9 +1,9 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, View, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Text } from 'react-native-paper'
-// import ToggleSwitch from '../../components/ToggleSwitch'
+import ToggleSwitch from '../../components/ToggleSwitch'
 import CustomButton from '../../components/CustomButton'
 import ErrorMessage from '../../components/ErrorMessage'
 import ConfirmActionDialog from '../../components/ConfirmActionDialog'
@@ -12,6 +12,8 @@ import { AuthenticatedUserContext } from '../../Navigation/AuthenticatedUserProv
 
 const DefaultSettings = ({ navigation }) => {
   const { user } = useContext(AuthenticatedUserContext)
+
+  const [activeToggle, setActiveToggle] = useState(true)
 
   const [errorTitle, setErrorTitle] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
@@ -241,6 +243,12 @@ const DefaultSettings = ({ navigation }) => {
     )
   }
 
+  const updateToggle = () => {
+    console.log(activeToggle)
+    setActiveToggle(prevState => !prevState)
+    console.log('set toggle:', activeToggle)
+  }
+
   const onConfirmButtonPressed = () => {
     confirmAction(confirmActionInput, confirmActionInput2)
   }
@@ -265,6 +273,10 @@ const DefaultSettings = ({ navigation }) => {
             <Text style={styles.textRight}>{user.displayName}</Text>
           </Text>
         </View>
+
+        {/* <View style={styles.toggle}>
+          <ToggleSwitch activeState={activeToggle} onToggleChange={updateToggle} settingTitle={'Dark Mode'} />
+        </View> */}
 
         <CustomButton onPress={onEditUsername} text='Edit Username' type='SECONDARY' />
         <CustomButton onPress={onEditEmailAddress} text='Change Email Address' type='SECONDARY' />
@@ -318,15 +330,8 @@ const styles = StyleSheet.create({
   marginBottom: {
     marginBottom: 25,
   },
-  option: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: 15,
+  toggle: {
     maxWidth: 400,
-  },
-  optionTextValue: {
-    flex: 1,
   },
   title: {
     fontSize: 24,
